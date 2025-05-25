@@ -27,6 +27,7 @@ me\vout\arcania\util\ToolHelper.class
 me\vout\arcania\enchant\weapon\EssenceEnchant.class
 me\vout\arcania\manager\GuiManager.class
 me\vout\arcania\gui\enchants\EnchantsFilterEnum.class
+me\vout\arcania\enchant\hoe\HarvesterEnchant.class
 me\vout\arcania\gui\enchants\EnchantsMenuHandler.class
 me\vout\arcania\gui\PersistentDataEnum.class
 me\vout\arcania\gui\enchanter\EnchanterMenu.class

@@ -2,6 +2,7 @@ package me.vout.arcania.manager;
 
 import me.vout.arcania.Arcania;
 import me.vout.arcania.enchant.ArcaniaEnchant;
+import me.vout.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.arcania.enchant.hoe.TillerEnchant;
 import me.vout.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.arcania.enchant.pickaxe.VeinminerEnchant;
@@ -28,6 +29,7 @@ public class ArcaniaEnchantManager {
     private void enchantInit() {
         enchants.add(QuarryEnchant.INSTANCE);
         enchants.add(TillerEnchant.INSTANCE);
+        enchants.add(HarvesterEnchant.INSTANCE);
         enchants.add(FrostbiteEnchant.INSTANCE);
         enchants.add(VeinminerEnchant.INSTANCE);
         enchants.add(MagnetEnchant.INSTANCE);

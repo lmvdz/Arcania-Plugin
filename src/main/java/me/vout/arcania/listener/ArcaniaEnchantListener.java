@@ -2,6 +2,7 @@ package me.vout.arcania.listener;
 
 import me.vout.arcania.Arcania;
 import me.vout.arcania.enchant.ArcaniaEnchant;
+import me.vout.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.arcania.enchant.hoe.TillerEnchant;
 import me.vout.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.arcania.enchant.pickaxe.VeinminerEnchant;
@@ -30,11 +31,6 @@ import org.bukkit.persistence.PersistentDataType;
 import java.util.Map;
 
 public class ArcaniaEnchantListener implements Listener {
-    private final ArcaniaEnchantManager enchantManager;
-
-    public ArcaniaEnchantListener(ArcaniaEnchantManager manager) {
-        this.enchantManager = manager;
-    }
 
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
@@ -78,8 +74,12 @@ public class ArcaniaEnchantListener implements Listener {
 
         if (activeEnchants.containsKey(TillerEnchant.INSTANCE)) {
             // Check if the clicked block can be tilled
-            if (clicked == null || !TillerEnchant.isTillable(clicked.getType())) return;
-            TillerEnchant.onProc(player, tool, clicked, event);
+            if (clicked != null && TillerEnchant.isTillable(clicked.getType()))
+                TillerEnchant.onProc(player, tool, clicked, event);
+        }
+        if (activeEnchants.containsKey(HarvesterEnchant.INSTANCE)) {
+            if (clicked != null && HarvesterEnchant.isCrop(clicked.getType()))
+                HarvesterEnchant.onProc(player, clicked, tool);
         }
     }
 

@@ -37,7 +37,6 @@ public class TillerEnchant extends ArcaniaEnchant {
     }
 
     public static void onProc(Player player, ItemStack tool, Block clicked, PlayerInteractEvent event) {
-
         // 3x3 area around the clicked block
         outer:
         for (int dx = -1; dx <= 1; dx++) {
@@ -67,6 +66,6 @@ public class TillerEnchant extends ArcaniaEnchant {
         Material newType = (block.getType() == Material.COARSE_DIRT) ? Material.DIRT : Material.FARMLAND;
         block.setType(newType, true);
         // Optionally play sound/particle
-        block.getWorld().playSound(block.getLocation(), Sound.ITEM_HOE_TILL, 1.0f, 1.0f);
+        //block.getWorld().playSound(block.getLocation(), Sound.ITEM_HOE_TILL, 1.0f, 1.0f);
     }
 }

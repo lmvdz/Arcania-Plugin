@@ -52,7 +52,7 @@ public final class Arcania extends JavaPlugin {
 
         // Register listeners with new manager instances
         getServer().getPluginManager().registerEvents(
-                new ArcaniaEnchantListener(enchantManager), this
+                new ArcaniaEnchantListener(), this
         );
         getServer().getPluginManager().registerEvents(
                 new GuiListener(guiManager), this
