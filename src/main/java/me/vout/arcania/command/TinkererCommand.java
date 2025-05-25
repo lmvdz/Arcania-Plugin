@@ -19,6 +19,6 @@ public class TinkererCommand implements CommandExecutor {
             return true;
         }
         guiManager.openGui(player, GuiTypeEnum.TINKERER);
-        return false;
+        return true;
     }
 }

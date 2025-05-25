@@ -19,6 +19,6 @@ public class DisenchanterCommand implements CommandExecutor {
             return true;
         }
         guiManager.openGui(player, GuiTypeEnum.DISENCHANTER);
-        return false;
+        return true;
     }
 }

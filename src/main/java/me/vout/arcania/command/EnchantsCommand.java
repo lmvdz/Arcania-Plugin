@@ -20,6 +20,6 @@ public class EnchantsCommand implements CommandExecutor {
             return true;
         }
         guiManager.openGui(player, GuiTypeEnum.ENCHANTS);
-        return false;
+        return true;
     }
 }

@@ -21,6 +21,6 @@ public class EnchanterCommand implements CommandExecutor {
             return true;
         }
         guiManager.openGui(player, GuiTypeEnum.ENCHANTER);
-        return false;
+        return true;
     }
 }
