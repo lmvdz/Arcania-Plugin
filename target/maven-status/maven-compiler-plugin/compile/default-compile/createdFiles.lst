@@ -2,7 +2,9 @@ me\vout\arcania\gui\enchanter\EnchanterActionsEnum.class
 me\vout\arcania\enchant\EnchantRarityEnum.class
 me\vout\arcania\enchant\pickaxe\VeinminerEnchant.class
 me\vout\arcania\gui\tinkerer\TinkererMenu.class
+me\vout\arcania\enchant\weapon\FrostbiteEnchant$FrostBiteArrowEnum.class
 me\vout\arcania\util\EnchantHelper.class
+me\vout\arcania\enchant\weapon\FrostbiteEnchant.class
 me\vout\arcania\gui\GuiBuilder.class
 me\vout\arcania\gui\GuiTypeEnum.class
 me\vout\arcania\enchant\ArcaniaEnchant.class
@@ -41,6 +43,7 @@ me\vout\arcania\command\EnchantsCommand.class
 me\vout\arcania\enchant\pickaxe\QuarryEnchant.class
 me\vout\arcania\enchant\tool\MagnetEnchant.class
 me\vout\arcania\gui\enchanter\EnchanterMenuHolder.class
+me\vout\arcania\enchant\weapon\FrostbiteEnchant$1.class
 me\vout\arcania\enchant\EnchantExtraEnum.class
 me\vout\arcania\gui\main\MainMenu.class
 me\vout\arcania\listener\GuiListener.class

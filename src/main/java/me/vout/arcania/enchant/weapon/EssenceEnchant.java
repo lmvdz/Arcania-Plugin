@@ -30,7 +30,7 @@ public class EssenceEnchant extends ArcaniaEnchant {
         return true;
     }
 
-    public static void onProc(Player player,EntityDeathEvent event, Map<ArcaniaEnchant, Integer> enchants) {
+    public static void onProc(Player player, EntityDeathEvent event, Map<ArcaniaEnchant, Integer> enchants) {
         int essenceLevel = 0;
         if (enchants.containsKey(EssenceEnchant.INSTANCE))
             essenceLevel = enchants.get(EssenceEnchant.INSTANCE);

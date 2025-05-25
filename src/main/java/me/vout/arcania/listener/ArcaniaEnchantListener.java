@@ -1,25 +1,31 @@
 package me.vout.arcania.listener;
 
+import me.vout.arcania.Arcania;
 import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.enchant.hoe.TillerEnchant;
 import me.vout.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.arcania.enchant.pickaxe.VeinminerEnchant;
 import me.vout.arcania.enchant.tool.MagnetEnchant;
 import me.vout.arcania.enchant.weapon.EssenceEnchant;
+import me.vout.arcania.enchant.weapon.FrostbiteEnchant;
 import me.vout.arcania.manager.ArcaniaEnchantManager;
 import me.vout.arcania.util.EnchantHelper;
 import me.vout.arcania.util.ItemHelper;
 import me.vout.arcania.util.ToolHelper;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataType;
 
 import java.util.Map;
 
@@ -97,17 +103,44 @@ public class ArcaniaEnchantListener implements Listener {
         }
     }
 
-    /*@EventHandler
+    @EventHandler
+    public void onEntityShootBow(EntityShootBowEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getProjectile() instanceof Arrow arrow)) return;
+
+        ItemStack bow = event.getBow();
+        Map<ArcaniaEnchant, Integer> enchants = EnchantHelper.getItemEnchants(bow);
+        if (enchants.containsKey(FrostbiteEnchant.INSTANCE)) {
+            int level = enchants.get(FrostbiteEnchant.INSTANCE);
+            arrow.getPersistentDataContainer().set(
+                    new NamespacedKey(Arcania.getInstance(), FrostbiteEnchant.FrostBiteArrowEnum.FROSTBITE_ARROW.toString()),
+                    PersistentDataType.INTEGER,
+                    level
+            );
+        }
+    }
+
+    @EventHandler
     public void onentityDamgeByEntity(EntityDamageByEntityEvent event) {
         if (event.isCancelled()) return;
-
         Entity damager = event.getDamager();
         Entity victim = event.getEntity();
-        if (damager instanceof Player player && victim instanceof LivingEntity) {
+        if (damager instanceof Player player &&
+                victim instanceof LivingEntity) {
             ItemStack weapon = player.getInventory().getItemInMainHand();
-
             Map<ArcaniaEnchant, Integer> enchants = EnchantHelper.getItemEnchants(weapon);
             if (enchants.isEmpty()) return;
+            if (enchants.containsKey(FrostbiteEnchant.INSTANCE))
+                FrostbiteEnchant.onProc(event, enchants.get(FrostbiteEnchant.INSTANCE));
         }
-    } */
+        else if (damager instanceof Arrow arrow
+                && arrow.getShooter() instanceof Player player
+                && victim instanceof LivingEntity) {
+            NamespacedKey key = new NamespacedKey(Arcania.getInstance(), FrostbiteEnchant.FrostBiteArrowEnum.FROSTBITE_ARROW.toString());
+            int level = arrow.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
+            if (level > 0) {
+                FrostbiteEnchant.onProc(event, level);
+            }
+        }
+    }
 }
