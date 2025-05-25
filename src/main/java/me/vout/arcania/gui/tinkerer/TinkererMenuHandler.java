@@ -4,6 +4,7 @@ import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.util.EnchantHelper;
 import me.vout.arcania.util.ItemHelper;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
@@ -48,6 +49,7 @@ public class TinkererMenuHandler {
                         clickedInventory.setItem(clickedSlot, null);
                         tinkererInventory.setItem(TinkererMenuHolder.INPUT_SLOT1, null);
                         tinkererInventory.setItem(TinkererMenuHolder.INPUT_SLOT2, null);
+                        player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.3f, 1.0f);
                     }
                 }
                 else {
@@ -55,6 +57,7 @@ public class TinkererMenuHandler {
                     tinkererInventory.setItem(clickedSlot, null);
                     tinkererInventory.setItem(TinkererMenuHolder.INPUT_SLOT1, null);
                     tinkererInventory.setItem(TinkererMenuHolder.INPUT_SLOT2, null);
+                    player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_USE, 0.3f, 1.0f);
                 }
             }
 

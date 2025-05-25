@@ -4,6 +4,8 @@ import me.vout.arcania.Arcania;
 import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.enchant.EnchantRarityEnum;
 import me.vout.arcania.util.EnchantHelper;
+import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
@@ -55,7 +57,7 @@ public class DisenchanterMenuHandler {
                         clickedInventory.setItem(clickedSlot, null);
                         disenchanterInventory.setItem(DisenchanterMenuHolder.INPUT_SLOT, null);
                         player.getWorld().spawn(player.getLocation(), ExperienceOrb.class).setExperience(xp);
-                        // Need to give xp
+                        player.playSound(player.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 0.5f, 1.0f);
                     }
                 }
                 else {
@@ -63,7 +65,7 @@ public class DisenchanterMenuHandler {
                     disenchanterInventory.setItem(clickedSlot, null);
                     disenchanterInventory.setItem(DisenchanterMenuHolder.INPUT_SLOT, null);
                     player.getWorld().spawn(player.getLocation(), ExperienceOrb.class).setExperience(xp);
-                    // Need to give xp
+                    player.playSound(player.getLocation(), Sound.BLOCK_GRINDSTONE_USE, 0.5f, 1.0f);
                 }
             }
 
@@ -89,7 +91,8 @@ public class DisenchanterMenuHandler {
 
         Map<ArcaniaEnchant, Integer> enchants = EnchantHelper.getItemEnchants(inputItem);
         if (enchants.isEmpty()) return null;
-
+        if (inputItem.getType() == Material.ENCHANTED_BOOK) // otherwise returns special enchanted book
+            return new ItemStack(Material.BOOK);
         ItemStack outputItem = inputItem.clone();
         ItemMeta outputMeta = outputItem.getItemMeta();
         outputMeta.setLore(null);

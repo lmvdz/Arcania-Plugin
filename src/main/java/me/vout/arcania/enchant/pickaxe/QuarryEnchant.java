@@ -18,11 +18,11 @@ public class QuarryEnchant extends ArcaniaEnchant {
     private QuarryEnchant() {
         super("Quarry",
                 "Mines a 3x3 around broken block",
-                EnchantRarityEnum.UNCOMMON,
+                EnchantRarityEnum.RARE,
                 1,
                 0.5,
                 2,
-                ItemHelper::isPickaxe);
+                ItemHelper::isDigger);
     }
 
     @Override

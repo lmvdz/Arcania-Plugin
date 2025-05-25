@@ -11,6 +11,7 @@ import me.vout.arcania.util.EnchantHelper;
 import me.vout.arcania.util.InventoryHelper;
 import me.vout.arcania.util.ItemHelper;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -41,12 +42,14 @@ public class EnchanterMenuHandler {
                     ArcaniaEnchant enchant = getEnchant(action.getRarity(), false);
                     int level = getLevel(enchant);
                     InventoryHelper.giveOrDrop(player, EnchantHelper.getEnchantBook(enchant, level, false));
+                    player.playSound(player.getLocation(), Sound.BLOCK_ENCHANTMENT_TABLE_USE, 0.5f, 1.0f);
                 } else {
                     ItemStack errorItem = new ItemStack(Material.RED_WOOL);
                     ItemMeta meta = errorItem.getItemMeta();
                     meta.setDisplayName(ItemHelper.colorizeHex(EnchantExtraEnum.ERROR_MESSAGE.getColor() + "Not enough levels!"));
                     slotItem.setType(Material.RED_WOOL);
                     slotItem.setItemMeta(meta);
+                    player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 0.5f, 0.8f);
                 }
             }
         } // cancels shift clicking from users inventory

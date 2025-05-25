@@ -26,6 +26,11 @@ public class ItemHelper {
         return isTool(mat) || isSword(mat) || isRangedWeapon(mat) || isTrident(mat) || isHoe(mat);
     }
 
+    public static boolean isDigger(Material mat) {
+        return mat.name().endsWith("_PICKAXE") ||
+                mat.name().endsWith("_SHOVEL");
+    }
+
     public static boolean isPickaxe(Material mat) {
         return mat.name().endsWith("_PICKAXE");
     }
