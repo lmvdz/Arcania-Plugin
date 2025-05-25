@@ -69,8 +69,7 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
             case 2 -> 0.35f; // 35% chance
             default -> 0f;
         };
-        return true;
-        //return random.nextFloat() < chance;
+        return random.nextFloat() < chance;
     }
 
     public static void startSnowTrail(LivingEntity entity) {
