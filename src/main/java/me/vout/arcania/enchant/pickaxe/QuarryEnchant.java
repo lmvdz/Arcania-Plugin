@@ -11,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
+import java.util.Map;
 
 public class QuarryEnchant extends ArcaniaEnchant {
 
@@ -29,12 +30,11 @@ public class QuarryEnchant extends ArcaniaEnchant {
     public boolean canApplyWith(ArcaniaEnchant enchant) {
         return true;
     }
-
-    //TODO Magnet or any manual break override is not triggering block updates on neighbors (Nether portal doesnt break when lit and breaking frame)
-    public static void onProc(Player player, ItemStack item, BlockBreakEvent event, int veinMinerLevel, boolean hasMagnet) {
+    public static void onProc(Player player, ItemStack item, BlockBreakEvent event, Map<ArcaniaEnchant, Integer> enchants) {
         Block block = event.getBlock();
         if (!block.isPreferredTool(item)) return;
 
+        int veinMinerLevel = enchants.getOrDefault(VeinminerEnchant.INSTANCE, 0);
         BlockFace face = getBlockFace(player);
         if (face == null)
             face = player.getFacing();
@@ -45,10 +45,10 @@ public class QuarryEnchant extends ArcaniaEnchant {
             Block relative = block.getRelative(offset[0], offset[1], offset[2]);
             if (relative.isPreferredTool(item)) {
                 if (VeinminerEnchant.isVeinMineBlock(relative.getType()) && veinMinerLevel > 0) {
-                    VeinminerEnchant.veinMine(player, relative, veinMinerLevel, hasMagnet);
+                    VeinminerEnchant.veinMine(player, relative, enchants);
                 }
                 else {
-                    if (!ToolHelper.customBreakBlock(player, relative, item, hasMagnet)) break;
+                    if (!ToolHelper.customBreakBlock(player, relative, item, enchants)) break;
                 }
             }
         }

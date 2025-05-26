@@ -48,8 +48,6 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
     public boolean canApplyWith(ArcaniaEnchant enchant) {
         return true;
     }
-
-    //TODO Applies when you bunch with a bow, need to check the type if direct damage
     public static void onProc(EntityDamageByEntityEvent event, int level) {
         if (!shouldApplyEffect(level) ||
                 !(event.getEntity() instanceof LivingEntity)) return;
@@ -99,11 +97,10 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
                     blockAtFeet.setType(Material.SNOW);
 
                     // Schedule removal after 5 seconds (100 ticks)
-                    Block placedBlock = blockAtFeet;
                     Bukkit.getScheduler().runTaskLater(Arcania.getInstance(), () -> {
                         // Only remove if it's still snow (not mined or replaced)
-                        if (placedBlock.getType() == Material.SNOW) {
-                            placedBlock.setType(Material.AIR);
+                        if (blockAtFeet.getType() == Material.SNOW) {
+                            blockAtFeet.setType(Material.AIR);
                         }
                     }, 100L);
                 }

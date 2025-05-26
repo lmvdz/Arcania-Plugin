@@ -40,6 +40,7 @@ me\vout\arcania\gui\enchanter\EnchanterMenuHandler.class
 me\vout\arcania\gui\tinkerer\TinkererMenuHandler.class
 me\vout\arcania\gui\base\GuiHolder.class
 me\vout\arcania\command\TinkererCommand.class
+me\vout\arcania\enchant\pickaxe\EnrichmentEnchant.class
 me\vout\arcania\command\EnchanterCommand.class
 me\vout\arcania\command\EnchantsCommand.class
 me\vout\arcania\enchant\pickaxe\QuarryEnchant.class

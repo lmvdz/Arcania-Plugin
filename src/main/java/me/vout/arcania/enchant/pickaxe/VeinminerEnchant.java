@@ -29,12 +29,12 @@ public class VeinminerEnchant extends ArcaniaEnchant {
         return true;
     }
 
-    public static void onProc(Player player, ItemStack item, BlockBreakEvent event, int veinMinerLevel, boolean hasMagnet) {
+    public static void onProc(Player player, BlockBreakEvent event, Map<ArcaniaEnchant, Integer> enchants) {
         Block block = event.getBlock();
 
         if (isVeinMineBlock(block.getType())) {
             event.setCancelled(true);
-            veinMine(player, block, veinMinerLevel, hasMagnet);
+            veinMine(player, block, enchants);
         }
     }
 
@@ -46,8 +46,8 @@ public class VeinminerEnchant extends ArcaniaEnchant {
                 mat == Material.TUFF;
     }
 
-    public static void veinMine(Player player, Block startBlock, int veinMineLevel, boolean hasMagnet) {
-        int maxBlocks = 10 + veinMineLevel * 5;
+    public static void veinMine(Player player, Block startBlock, Map<ArcaniaEnchant, Integer> enchants) {
+        int maxBlocks = 10 + enchants.get(VeinminerEnchant.INSTANCE) * 5;
         Material targetType = startBlock.getType();
         Set<Block> checked = new HashSet<>();
         Queue<Block> toCheck = new LinkedList<>();
@@ -81,7 +81,7 @@ public class VeinminerEnchant extends ArcaniaEnchant {
         // Break all found blocks as the player
         ItemStack tool = player.getInventory().getItemInMainHand();
         for (Block block : toBreak) {
-            if (!ToolHelper.customBreakBlock(player, block, tool, hasMagnet))
+            if (!ToolHelper.customBreakBlock(player, block, tool, enchants))
                 break;
         }
     }

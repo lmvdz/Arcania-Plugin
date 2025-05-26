@@ -3,13 +3,9 @@ package me.vout.arcania.enchant.weapon;
 import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.enchant.EnchantRarityEnum;
 import me.vout.arcania.enchant.tool.MagnetEnchant;
-import me.vout.arcania.util.InventoryHelper;
 import me.vout.arcania.util.ItemHelper;
-import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.Map;
 
@@ -20,8 +16,8 @@ public class EssenceEnchant extends ArcaniaEnchant {
                 "Increases xp dropped by mobs",
                 EnchantRarityEnum.LEGENDARY,
                 3,
-                0.6,
-                2,
+                0.3,
+                4,
                 ItemHelper::isMeleeWeapon);
     }
 
@@ -35,12 +31,9 @@ public class EssenceEnchant extends ArcaniaEnchant {
         if (enchants.containsKey(EssenceEnchant.INSTANCE))
             essenceLevel = enchants.get(EssenceEnchant.INSTANCE);
 
-        boolean hasMagnet = enchants.containsKey(MagnetEnchant.INSTANCE);
-
         int xp = event.getDroppedExp();
-        if (essenceLevel > 0) {
-            xp = getBonusMultiplier(essenceLevel) * xp;
-        }
+        if (essenceLevel > 0)
+            xp = getScaledXP(xp, essenceLevel);
 
         if (enchants.containsKey(MagnetEnchant.INSTANCE)) {
            MagnetEnchant.onProc(player, event, xp);
@@ -49,12 +42,15 @@ public class EssenceEnchant extends ArcaniaEnchant {
             event.setDroppedExp(xp);
     }
 
-    private static int getBonusMultiplier(int level) {
-        return switch (level) {
-            case 1 -> 2; // 2x
-            case 2 -> 3; // 3x
-            case 3 -> 4; // 4x
-            default -> 1;
-        };
+    public static int getScaledXP(int baseXP, int level) {
+        double[] multipliers = {0.75, 1.0, 1.5};
+        double k = 10.0;
+
+        if (baseXP <= 5) {
+            return (int) Math.round(baseXP * (1 + multipliers[level - 1]));
+        } else {
+            double bonus = baseXP * multipliers[level - 1] * (k / (baseXP + k));
+            return baseXP + (int) Math.round(bonus);
+        }
     }
 }

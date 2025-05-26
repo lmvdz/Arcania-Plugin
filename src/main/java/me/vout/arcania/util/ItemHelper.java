@@ -22,6 +22,14 @@ public class ItemHelper {
                 name.endsWith("SHEARS");
     }
 
+    public static boolean isBlockBreakTool(Material mat) {
+        String name = mat.name();
+        return name.endsWith("_PICKAXE") ||
+                name.endsWith("_SHOVEL") ||
+                name.endsWith("_AXE") ||
+                name.endsWith("SHEARS");
+    }
+
     public static boolean isToolExtended(Material mat) {
         return isTool(mat) || isSword(mat) || isRangedWeapon(mat) || isTrident(mat) || isHoe(mat);
     }
@@ -42,22 +50,8 @@ public class ItemHelper {
         return mat.name().endsWith("_SWORD");
     }
 
-    public static boolean isFishingRod(Material mat) {
-        return mat.name().endsWith("FISHING_ROD");
-    }
-
-    public static boolean isElytra(Material mat) {
-        return mat.name().equals("ELYTRA");
-    }
-
     public static boolean isTrident(Material mat) {
         return mat.name().endsWith("TRIDENT");
-    }
-
-    public static boolean isMiscTool(Material mat) {
-        String name = mat.name();
-        return name.endsWith("SHEARS") ||
-                name.endsWith("FLINT_AND_STEEL");
     }
 
     public static boolean isWeapon(Material mat) {
@@ -91,7 +85,7 @@ public class ItemHelper {
     public static String colorizeHex(String message) {
         Pattern hexPattern = Pattern.compile("#([A-Fa-f0-9]{6})");
         Matcher matcher = hexPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer();
+        StringBuilder buffer = new StringBuilder();
         while (matcher.find()) {
             String hex = matcher.group(1);
             StringBuilder replacement = new StringBuilder("§x");
@@ -107,6 +101,7 @@ public class ItemHelper {
     public static boolean isArcaniaEnchant(ItemStack item) {
         ItemMeta meta = item.getItemMeta();
         NamespacedKey key = new NamespacedKey(Arcania.getInstance(), PersistentDataEnum.ENCHANT.toString());
+        if (meta == null) return false;
         return meta.getPersistentDataContainer().has(key, PersistentDataType.STRING);
     }
 

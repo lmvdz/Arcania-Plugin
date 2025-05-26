@@ -4,16 +4,15 @@ import me.vout.arcania.Arcania;
 import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.arcania.enchant.hoe.TillerEnchant;
+import me.vout.arcania.enchant.pickaxe.EnrichmentEnchant;
 import me.vout.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.arcania.enchant.pickaxe.VeinminerEnchant;
 import me.vout.arcania.enchant.tool.MagnetEnchant;
 import me.vout.arcania.enchant.weapon.EssenceEnchant;
 import me.vout.arcania.enchant.weapon.FrostbiteEnchant;
-import me.vout.arcania.manager.ArcaniaEnchantManager;
 import me.vout.arcania.util.EnchantHelper;
 import me.vout.arcania.util.ItemHelper;
 import me.vout.arcania.util.ToolHelper;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.entity.*;
@@ -37,26 +36,28 @@ public class ArcaniaEnchantListener implements Listener {
         if (event.isCancelled()) return;
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType().isAir() || item.getType().equals(Material.ENCHANTED_BOOK)) return;
+        if (item.getType().isAir() ||  !ItemHelper.isBlockBreakTool(item.getType())) return;
 
         Map<ArcaniaEnchant, Integer> activeEnchants = EnchantHelper.getItemEnchants(item);
         if (activeEnchants.isEmpty()) return;
 
-        boolean hasMagnet = activeEnchants.containsKey(MagnetEnchant.INSTANCE);
-
         if (activeEnchants.containsKey(QuarryEnchant.INSTANCE) &&
                 event.getBlock().isPreferredTool(item)) {
-            boolean hasVeinMiner = activeEnchants.containsKey(VeinminerEnchant.INSTANCE);
-            QuarryEnchant.onProc(player, item, event, hasVeinMiner ? activeEnchants.get(VeinminerEnchant.INSTANCE) : 0, hasMagnet);
+            QuarryEnchant.onProc(player, item, event, activeEnchants);
         }
         if (!event.isCancelled() &&
                 activeEnchants.containsKey(VeinminerEnchant.INSTANCE)) {
-            VeinminerEnchant.onProc(player, item, event, activeEnchants.get(VeinminerEnchant.INSTANCE), hasMagnet);
+            VeinminerEnchant.onProc(player, event, activeEnchants);
+        }
+
+        if (!event.isCancelled() &&
+        activeEnchants.containsKey(EnrichmentEnchant.INSTANCE)) {
+            EnrichmentEnchant.onProc(player, item, event, activeEnchants);
         }
 
         if (!event.isCancelled() &&
                 activeEnchants.containsKey(MagnetEnchant.INSTANCE)) {
-            ToolHelper.customBreakBlock(player, event.getBlock(), item, true);
+            ToolHelper.customBreakBlock(player, event.getBlock(), item, activeEnchants);
         }
     }
 
@@ -99,13 +100,12 @@ public class ArcaniaEnchantListener implements Listener {
             if (!handled && enchants.containsKey(MagnetEnchant.INSTANCE)) {
                 MagnetEnchant.onProc(player, event, event.getDroppedExp());
             }
-
         }
     }
 
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+        if (!(event.getEntity() instanceof Player)) return;
         if (!(event.getProjectile() instanceof Arrow arrow)) return;
 
         ItemStack bow = event.getBow();
@@ -128,16 +128,16 @@ public class ArcaniaEnchantListener implements Listener {
         if (damager instanceof Player player &&
                 victim instanceof LivingEntity) {
             ItemStack weapon = player.getInventory().getItemInMainHand();
+            if (!ItemHelper.isMeleeWeapon(weapon.getType())) return;
             Map<ArcaniaEnchant, Integer> enchants = EnchantHelper.getItemEnchants(weapon);
             if (enchants.isEmpty()) return;
             if (enchants.containsKey(FrostbiteEnchant.INSTANCE))
                 FrostbiteEnchant.onProc(event, enchants.get(FrostbiteEnchant.INSTANCE));
         }
         else if (damager instanceof Arrow arrow
-                && arrow.getShooter() instanceof Player player
+                && arrow.getShooter() instanceof Player
                 && victim instanceof LivingEntity) {
             NamespacedKey key = new NamespacedKey(Arcania.getInstance(), FrostbiteEnchant.FrostBiteArrowEnum.FROSTBITE_ARROW.toString());
-
             Integer level = arrow.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
             if (level != null && level > 0) {
                 FrostbiteEnchant.onProc(event, level);

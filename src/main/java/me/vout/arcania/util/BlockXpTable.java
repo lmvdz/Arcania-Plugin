@@ -18,6 +18,7 @@ public class BlockXpTable {
             Map.entry(Material.LAPIS_ORE, () -> ThreadLocalRandom.current().nextInt(2, 6)),
             Map.entry(Material.DEEPSLATE_LAPIS_ORE, () -> ThreadLocalRandom.current().nextInt(2, 6)),
             Map.entry(Material.NETHER_QUARTZ_ORE, () -> ThreadLocalRandom.current().nextInt(2, 6)),
+            Map.entry(Material.NETHER_GOLD_ORE, () -> ThreadLocalRandom.current().nextInt(0, 2)),
             Map.entry(Material.REDSTONE_ORE, () -> ThreadLocalRandom.current().nextInt(1, 6)),
             Map.entry(Material.DEEPSLATE_REDSTONE_ORE, () -> ThreadLocalRandom.current().nextInt(1, 6)),
             Map.entry(Material.SCULK, () -> 1),

@@ -1,2 +1,3 @@
 # Default config for Arcania plugin
-fix-enchant-check: false
+utility:
+  fix-enchant-check: false

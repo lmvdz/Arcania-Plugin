@@ -6,7 +6,6 @@ import me.vout.arcania.util.InventoryHelper;
 import me.vout.arcania.util.ItemHelper;
 import org.bukkit.entity.ExperienceOrb;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
