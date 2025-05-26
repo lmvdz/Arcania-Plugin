@@ -18,7 +18,7 @@ public class EssenceEnchant extends ArcaniaEnchant {
     private EssenceEnchant() {
         super("Essence",
                 "Increases xp dropped by mobs",
-                EnchantRarityEnum.UNCOMMON,
+                EnchantRarityEnum.LEGENDARY,
                 3,
                 0.6,
                 2,

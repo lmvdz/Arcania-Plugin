@@ -14,6 +14,7 @@ import me.vout.arcania.gui.main.MainMenuHolder;
 import me.vout.arcania.gui.tinkerer.TinkererMenuHandler;
 import me.vout.arcania.gui.tinkerer.TinkererMenuHolder;
 import me.vout.arcania.manager.GuiManager;
+import me.vout.arcania.util.EnchantHelper;
 import me.vout.arcania.util.InventoryHelper;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -43,6 +44,11 @@ public class GuiListener implements Listener {
 
         Inventory clickedInventory = event.getClickedInventory();
         if (clickedInventory == null) return;
+
+        if (Arcania.getConfigManager().isFixEnchantCheckEnabled()) {
+            if (EnchantHelper.needsUpdate(event.getCurrentItem() == null ? event.getCursor() : event.getCurrentItem()))
+                Arcania.getInstance().getLogger().info(String.format(String.format("Updated item for %s", player.getDisplayName())));
+        }
 
         InventoryHolder topInventoryHolder = event.getView().getTopInventory().getHolder();
 

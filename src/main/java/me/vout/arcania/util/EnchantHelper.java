@@ -13,10 +13,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class EnchantHelper {
 
@@ -62,5 +59,38 @@ public class EnchantHelper {
 
     public static ItemStack toMaxLevelBook(ArcaniaEnchant enchant) {
         return getEnchantBook(enchant, enchant.getMaxLevel(), true);
+    }
+
+    public static boolean needsUpdate(ItemStack item) {
+        Map<ArcaniaEnchant, Integer> enchants = getItemEnchants(item);
+        if (enchants.isEmpty()) return false;
+
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+
+        // Build the expected, sorted lore
+        List<Map.Entry<ArcaniaEnchant, Integer>> sortedEnchants = new ArrayList<>(enchants.entrySet());
+        sortedEnchants.sort(Comparator
+                .comparing((Map.Entry<ArcaniaEnchant, Integer> e) -> e.getKey().getRarity().getCost())
+                .thenComparing(e -> e.getKey().getName(), String.CASE_INSENSITIVE_ORDER));
+
+        List<String> expectedLore = new ArrayList<>();
+        for (Map.Entry<ArcaniaEnchant, Integer> entry : sortedEnchants) {
+            ArcaniaEnchant e = entry.getKey();
+            int level = entry.getValue();
+            expectedLore.add(ItemHelper.colorizeHex(String.format("%s%s %s",
+                    e.getRarity().getColor(),
+                    e.getName(),
+                    ItemHelper.intToRoman(level)
+            )));
+        }
+
+        List<String> currentLore = meta.getLore();
+        if (!Objects.equals(currentLore, expectedLore)) {
+            meta.setLore(expectedLore);
+            item.setItemMeta(meta);
+            return true;
+        }
+        return false;
     }
 }

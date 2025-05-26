@@ -7,7 +7,7 @@ public enum EnchantRarityEnum {
     COMMON("#868D91", "Common", 5),
     UNCOMMON("#67A168","Uncommon", 10),
     RARE("#4383CC", "Rare", 15),
-    LEGENDARY("#FCC64C", "Legendary", 20),
+    LEGENDARY("#FF7200", "Legendary", 20),
     ULTRA("#AE53BF", "Ultra", 30);
 
     private final String color;

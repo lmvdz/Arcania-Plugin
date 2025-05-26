@@ -5,6 +5,7 @@ import me.vout.arcania.command.tab.ArcaniaTabCompleter;
 import me.vout.arcania.listener.ArcaniaEnchantListener;
 import me.vout.arcania.listener.GuiListener;
 import me.vout.arcania.manager.ArcaniaEnchantManager;
+import me.vout.arcania.manager.ConfigManager;
 import me.vout.arcania.manager.GuiManager;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,15 +14,17 @@ public final class Arcania extends JavaPlugin {
     private static Arcania instance;
     private static GuiManager guiManager;
 
+    private static ConfigManager configManager;
     private static ArcaniaEnchantManager enchantManager;
 
     @Override
     public void onEnable() {
         getLogger().info("Plugin started!");
+        instance = this;
+        configManager = new ConfigManager();
         saveDefaultConfig();
         reloadManagers();
         registerCommands();
-        instance = this;
         // Plugin startup logic
 
     }
@@ -46,7 +49,8 @@ public final class Arcania extends JavaPlugin {
         HandlerList.unregisterAll(this);
 
         // Reload config and re-initialize managers
-        reloadConfig();
+        //reloadConfig();
+        configManager.reload();
         enchantManager = new ArcaniaEnchantManager();
         guiManager = new GuiManager();
 
@@ -64,5 +68,8 @@ public final class Arcania extends JavaPlugin {
     }
     public static Arcania getInstance() {
         return  instance;
+    }
+    public static ConfigManager getConfigManager() {
+        return configManager;
     }
 }
