@@ -137,8 +137,9 @@ public class ArcaniaEnchantListener implements Listener {
                 && arrow.getShooter() instanceof Player player
                 && victim instanceof LivingEntity) {
             NamespacedKey key = new NamespacedKey(Arcania.getInstance(), FrostbiteEnchant.FrostBiteArrowEnum.FROSTBITE_ARROW.toString());
-            int level = arrow.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
-            if (level > 0) {
+
+            Integer level = arrow.getPersistentDataContainer().get(key, PersistentDataType.INTEGER);
+            if (level != null && level > 0) {
                 FrostbiteEnchant.onProc(event, level);
             }
         }
