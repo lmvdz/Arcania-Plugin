@@ -10,6 +10,8 @@ import me.vout.arcania.manager.GuiManager;
 import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public final class Arcania extends JavaPlugin {
     private static Arcania instance;
     private static GuiManager guiManager;
@@ -36,12 +38,12 @@ public final class Arcania extends JavaPlugin {
     }
 
     public void registerCommands() {
-        getCommand("arcania").setExecutor(new ArcaniaCommand(guiManager, this));
-        getCommand("arcania").setTabCompleter(new ArcaniaTabCompleter());
-        getCommand("tinkerer").setExecutor(new TinkererCommand(guiManager));
-        getCommand("disenchanter").setExecutor(new DisenchanterCommand(guiManager));
-        getCommand("enchanter").setExecutor(new EnchanterCommand(guiManager));
-        getCommand("enchants").setExecutor(new EnchantsCommand(guiManager));
+        Objects.requireNonNull(getCommand("arcania")).setExecutor(new ArcaniaCommand(guiManager, this));
+        Objects.requireNonNull(getCommand("arcania")).setTabCompleter(new ArcaniaTabCompleter());
+        Objects.requireNonNull(getCommand("tinkerer")).setExecutor(new TinkererCommand(guiManager));
+        Objects.requireNonNull(getCommand("disenchanter")).setExecutor(new DisenchanterCommand(guiManager));
+        Objects.requireNonNull(getCommand("enchanter")).setExecutor(new EnchanterCommand(guiManager));
+        Objects.requireNonNull(getCommand("enchants")).setExecutor(new EnchantsCommand(guiManager));
     }
 
     public void reloadManagers() {

@@ -1,4 +1,5 @@
 me\vout\arcania\gui\enchanter\EnchanterActionsEnum.class
+me\vout\arcania\manager\ConfigManager.class
 me\vout\arcania\enchant\EnchantRarityEnum.class
 me\vout\arcania\enchant\pickaxe\VeinminerEnchant.class
 me\vout\arcania\gui\tinkerer\TinkererMenu.class
