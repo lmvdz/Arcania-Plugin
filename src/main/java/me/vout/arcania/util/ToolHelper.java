@@ -32,7 +32,7 @@ public class ToolHelper {
             xp = BlockXpTable.getXp(block.getType());
 
         // 3. Remove block
-        block.setType(Material.AIR, false);
+        block.setType(Material.AIR, true);
 
         // 4. Handle drops
         if (hasMagnet) {

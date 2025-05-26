@@ -30,7 +30,7 @@ public class QuarryEnchant extends ArcaniaEnchant {
         return true;
     }
 
-
+    //TODO Magnet or any manual break override is not triggering block updates on neighbors (Nether portal doesnt break when lit and breaking frame)
     public static void onProc(Player player, ItemStack item, BlockBreakEvent event, int veinMinerLevel, boolean hasMagnet) {
         Block block = event.getBlock();
         if (!block.isPreferredTool(item)) return;

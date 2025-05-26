@@ -49,6 +49,7 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
         return true;
     }
 
+    //TODO Applies when you bunch with a bow, need to check the type if direct damage
     public static void onProc(EntityDamageByEntityEvent event, int level) {
         if (!shouldApplyEffect(level) ||
                 !(event.getEntity() instanceof LivingEntity)) return;
