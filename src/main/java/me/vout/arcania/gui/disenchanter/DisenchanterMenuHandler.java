@@ -17,7 +17,8 @@ import java.util.Map;
 
 public class DisenchanterMenuHandler {
 
-    //TODO allow for adding a book the first enchant can be moved over to and remove from the initial item, rather than clearing all
+    //TODO: allow for adding a book the first enchant can be moved over to and remove from the initial item, rather than clearing all
+    
     public static void handler(InventoryClickEvent event) {
         int clickedSlot = event.getSlot();
         Player player = (Player) event.getWhoClicked();
