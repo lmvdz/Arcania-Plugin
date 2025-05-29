@@ -23,7 +23,7 @@ public class EnchantHelper {
         List<String> lore = new ArrayList<>();
         lore.add(String.format("%s%s %s",ItemHelper.colorizeHex(enchant.getRarity().getColor()), enchant.getName(), ItemHelper.intToRoman(level)));
         if (includeDescription)
-            lore.add(String.format("%s%s",ItemHelper.colorizeHex(EnchantExtraEnum.TOOL_TIP.getColor()), enchant.getDescription()));
+            lore.add(String.format("%s%s%s", ItemHelper.colorizeHex(EnchantExtraEnum.DESCRIPTION.getColor()), ChatColor.ITALIC, enchant.getDescription()));
         meta.setLore(lore);
         meta.addEnchant(Enchantment.UNBREAKING, 1, true); // Glowing effect
         meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_ATTRIBUTES);
