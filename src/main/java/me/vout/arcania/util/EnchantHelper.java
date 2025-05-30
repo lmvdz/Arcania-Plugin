@@ -5,7 +5,6 @@ import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.enchant.EnchantExtraEnum;
 import me.vout.arcania.gui.GuiHelper;
 import me.vout.arcania.gui.PersistentDataEnum;
-import me.vout.arcania.manager.ArcaniaEnchantManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;

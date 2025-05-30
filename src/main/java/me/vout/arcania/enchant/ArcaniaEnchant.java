@@ -1,10 +1,6 @@
 package me.vout.arcania.enchant;
 
-import me.vout.arcania.Arcania;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Predicate;
 
@@ -14,7 +10,6 @@ public abstract class ArcaniaEnchant {
     private final int weight;
     private final String description;
     private final EnchantRarityEnum rarity;
-    public static final String KEY = "arcania_enchants";
     private final Predicate<Material> canApplyPredicate;
     private final int max;
 

@@ -1,6 +1,6 @@
 package me.vout.arcania.manager;
 
-import me.vout.arcania.gui.*;
+import me.vout.arcania.gui.GuiTypeEnum;
 import me.vout.arcania.gui.base.GuiHolder;
 import me.vout.arcania.gui.disenchanter.DisenchanterMenu;
 import me.vout.arcania.gui.enchanter.EnchanterMenu;
