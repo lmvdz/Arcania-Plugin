@@ -96,7 +96,7 @@ public class ArcaniaEnchantListener implements Listener {
         ItemStack offhand = player.getInventory().getItemInOffHand();
 
         ItemStack bow = event.getBow();
-        assert bow != null;
+        if (bow == null) return;
         Map<ArcaniaEnchant, Integer> enchants = EnchantHelper.getItemEnchants(bow);
         if (enchants.containsKey(FrostbiteEnchant.INSTANCE)) {
             int level = enchants.get(FrostbiteEnchant.INSTANCE);
