@@ -20,10 +20,6 @@ import org.bukkit.persistence.PersistentDataType;
 import me.vout.paper.arcania.Arcania;
 import me.vout.paper.arcania.gui.PersistentDataEnum;
 
-
-
-
-
 public class ItemHelper {
 
     public static Map<Material, FurnaceRecipe> furnaceRecipes = new HashMap<>();
