@@ -1,16 +1,11 @@
 package me.vout.paper.arcania.util;
 
-import io.papermc.paper.datacomponent.DataComponentTypes;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.TypedKey;
-import me.vout.paper.arcania.Arcania;
-import me.vout.paper.arcania.enchant.pickaxe.EnrichmentEnchant;
-import me.vout.paper.arcania.enchant.pickaxe.QuarryEnchant;
-import me.vout.paper.arcania.enchant.pickaxe.SmeltEnchant;
-import me.vout.paper.arcania.enchant.pickaxe.VeinminerEnchant;
-import me.vout.paper.arcania.enchant.tool.MagnetEnchant;
-import me.vout.paper.arcania.enchant.tool.ProsperityEnchant;
-import me.vout.paper.arcania.enchant.weapon.EssenceEnchant;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Collectors;
+
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
@@ -24,53 +19,56 @@ import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.Collectors;
+import io.papermc.paper.datacomponent.DataComponentTypes;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.TypedKey;
+import me.vout.paper.arcania.Arcania;
+import me.vout.paper.arcania.enchant.pickaxe.EnrichmentEnchant;
+import me.vout.paper.arcania.enchant.pickaxe.QuarryEnchant;
+import me.vout.paper.arcania.enchant.pickaxe.SmeltEnchant;
+import me.vout.paper.arcania.enchant.pickaxe.VeinminerEnchant;
+import me.vout.paper.arcania.enchant.tool.MagnetEnchant;
+import me.vout.paper.arcania.enchant.tool.ProsperityEnchant;
+import me.vout.paper.arcania.enchant.weapon.EssenceEnchant;
 
 
 
 public class ToolHelper {
 
-    
-
-
-
     public static boolean isValidToolForBlock(ItemStack tool, Block block) {
         TypedKey<BlockType> typedKeyBlockType = TypedKey.create(RegistryKey.BLOCK, block.getType().getKey());
 
-        boolean isValidToolForBlock = tool.getData(DataComponentTypes.TOOL).rules().stream().filter(rule -> rule.blocks().contains(typedKeyBlockType)).collect(Collectors.toList()).size() > 0;
+        boolean isValidToolForBlock = tool.getData(DataComponentTypes.TOOL).rules().stream()
+                .filter(rule -> rule.blocks().contains(typedKeyBlockType)).collect(Collectors.toList()).size() > 0;
 
-        // Arcania.getInstance().getLogger().log(Level.INFO, "isValidToolForBlock (block: " + block.getType().getKey() + "): " + isValidToolForBlock);
+        // Arcania.getInstance().getLogger().log(Level.INFO, "isValidToolForBlock
+        // (block: " + block.getType().getKey() + "): " + isValidToolForBlock);
         return isValidToolForBlock;
     }
+
     /**
      * Custom break block logic
-     * @param player The player breaking the block
-     * @param event The block break event
-     * @param tool The tool used to break the block
-     * @param enchants The enchants on the tool used by the player to break the block
+     * 
+     * @param player   The player breaking the block
+     * @param event    The block break event
+     * @param tool     The tool used to break the block
+     * @param enchants The enchants on the tool used by the player to break the
+     *                 block
      */
     public static void customBreakBlock(
             Player player,
             BlockBreakEvent event,
             ItemStack tool,
-            Map<Enchantment, Integer> enchants
-    ) {
-
-
+            Map<Enchantment, Integer> enchants) {
 
         // get the block to break
         Block block = event.getBlock();
 
         // prepare xp to give
-        final float[] xpToGive = {event.getExpToDrop()};
+        final float[] xpToGive = { event.getExpToDrop() };
 
         // prepare list of blocks to attempt to break
         List<Block> additionalBlocksToBreak = new ArrayList<>();
-
 
         /**
          * 
@@ -81,15 +79,14 @@ public class ToolHelper {
         boolean hasMagnet = enchants.containsKey(Arcania.getEnchantRegistry().get(MagnetEnchant.INSTANCE.getKey()));
         Location dropLocation = hasMagnet ? player.getLocation() : block.getLocation();
 
-
-
-         /**
+        /**
          * 
          * VeinMiner
          * 
          */
         // then process veinminer to collect which blocks to break based on the quarry
-        boolean hasVeinminer = enchants.containsKey(Arcania.getEnchantRegistry().get(VeinminerEnchant.INSTANCE.getKey()));
+        boolean hasVeinminer = enchants
+                .containsKey(Arcania.getEnchantRegistry().get(VeinminerEnchant.INSTANCE.getKey()));
         boolean hasVeinminerMetadata = block.hasMetadata("arcania:veinmined");
 
         /**
@@ -117,7 +114,8 @@ public class ToolHelper {
                     VeinminerEnchant.getBlocksToBreak(player, event, tool, enchants, additionalBlocksToBreak);
 
                     additionalBlocksToBreak.forEach(veinMineBlock -> {
-                        veinMineBlock.setMetadata("arcania:veinmined", new FixedMetadataValue(Arcania.getInstance(), true));
+                        veinMineBlock.setMetadata("arcania:veinmined",
+                                new FixedMetadataValue(Arcania.getInstance(), true));
                     });
                 }
             }
@@ -149,7 +147,7 @@ public class ToolHelper {
         // Calculate drops and XP
         block.getDrops(tool).forEach(itemStack -> {
             if (hasSmelting) {
-                FurnaceRecipe furnaceRecipe = ItemHelper.getFurnaceRecipeForItemStack(itemStack);
+                FurnaceRecipe furnaceRecipe = FurnaceRecipeHelper.getFurnaceRecipeForItemStack(itemStack);
                 if (furnaceRecipe != null) {
                     ItemStack smeltedItemStack = furnaceRecipe.getResult().clone();
                     smeltedItemStack.setAmount(itemStack.getAmount());
@@ -168,7 +166,6 @@ public class ToolHelper {
                 item.setAmount(item.getAmount() * 2);
             }
         });
-        
 
         /**
          * 
@@ -203,11 +200,10 @@ public class ToolHelper {
             )
         );
     }
-    
 
     public static boolean damageTool(Player player, ItemStack tool, int amount) {
         int actualDamage = simulateToolDamage(tool, amount);
-        
+
         // For 1.13+ (ItemMeta.setDamage)
         ItemMeta meta = tool.getItemMeta();
         if (meta instanceof Damageable damageable) {
@@ -227,9 +223,11 @@ public class ToolHelper {
 
     /**
      * Simulates tool damage without actually applying it
-     * @param tool The tool to simulate damage for
+     * 
+     * @param tool   The tool to simulate damage for
      * @param amount The amount of damage to simulate
-     * @return The actual amount of damage that would be applied after unbreaking calculations
+     * @return The actual amount of damage that would be applied after unbreaking
+     *         calculations
      */
     public static int simulateToolDamage(ItemStack tool, int amount) {
         int unbreaking = tool.getEnchantmentLevel(Enchantment.UNBREAKING);
@@ -251,7 +249,8 @@ public class ToolHelper {
 
     /**
      * Simulates whether a tool would break after taking a certain amount of damage
-     * @param tool The tool to check
+     * 
+     * @param tool   The tool to check
      * @param amount The amount of damage to simulate
      * @return true if the tool would survive, false if it would break
      */
@@ -259,7 +258,7 @@ public class ToolHelper {
         if (!(tool.getItemMeta() instanceof Damageable damageable)) {
             return true;
         }
-        
+
         int actualDamage = simulateToolDamage(tool, amount);
         int newDamage = damageable.getDamage() + actualDamage;
         return newDamage < tool.getType().getMaxDurability();
