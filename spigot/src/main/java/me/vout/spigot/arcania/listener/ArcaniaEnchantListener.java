@@ -2,6 +2,7 @@ package me.vout.spigot.arcania.listener;
 
 import me.vout.spigot.arcania.Arcania;
 import me.vout.spigot.arcania.enchant.ArcaniaEnchant;
+import me.vout.spigot.arcania.enchant.bow.BlinkEnchantment;
 import me.vout.spigot.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.spigot.arcania.enchant.hoe.TillerEnchant;
 import me.vout.spigot.arcania.enchant.tool.MagnetEnchant;
@@ -10,9 +11,13 @@ import me.vout.spigot.arcania.enchant.weapon.FrostbiteEnchant;
 import me.vout.spigot.arcania.util.EnchantHelper;
 import me.vout.spigot.arcania.util.ItemHelper;
 import me.vout.spigot.arcania.util.ToolHelper;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.entity.*;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -86,10 +91,12 @@ public class ArcaniaEnchantListener implements Listener {
 
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
         if (!(event.getProjectile() instanceof Arrow arrow)) return;
+        ItemStack offhand = player.getInventory().getItemInOffHand();
 
         ItemStack bow = event.getBow();
+        assert bow != null;
         Map<ArcaniaEnchant, Integer> enchants = EnchantHelper.getItemEnchants(bow);
         if (enchants.containsKey(FrostbiteEnchant.INSTANCE)) {
             int level = enchants.get(FrostbiteEnchant.INSTANCE);
@@ -98,6 +105,9 @@ public class ArcaniaEnchantListener implements Listener {
                     PersistentDataType.INTEGER,
                     level
             );
+        }
+        if (enchants.containsKey(BlinkEnchantment.INSTANCE) && offhand.getType() == Material.ENDER_PEARL) {
+            BlinkEnchantment.onProc(player, event, offhand);
         }
     }
 

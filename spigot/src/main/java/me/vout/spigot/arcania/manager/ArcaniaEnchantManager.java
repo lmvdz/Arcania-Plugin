@@ -1,6 +1,7 @@
 package me.vout.spigot.arcania.manager;
 
 import me.vout.spigot.arcania.enchant.ArcaniaEnchant;
+import me.vout.spigot.arcania.enchant.bow.BlinkEnchantment;
 import me.vout.spigot.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.spigot.arcania.enchant.hoe.TillerEnchant;
 import me.vout.spigot.arcania.enchant.pickaxe.EnrichmentEnchant;
@@ -29,6 +30,7 @@ public class ArcaniaEnchantManager {
     private void enchantInit() {
         enchants.add(QuarryEnchant.INSTANCE);
         enchants.add(TillerEnchant.INSTANCE);
+        enchants.add(BlinkEnchantment.INSTANCE);
         enchants.add(EnrichmentEnchant.INSTANCE);
         enchants.add(HarvesterEnchant.INSTANCE);
         enchants.add(FrostbiteEnchant.INSTANCE);
