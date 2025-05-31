@@ -1,5 +1,0 @@
-name: Arcania
-version: '1.0'
-main: me.vout.paper.arcania.Arcania
-description: Custom enchants plugin
-api-version: '1.21.5'
