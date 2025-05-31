@@ -42,6 +42,11 @@ public class ArcaniaBootstrap implements PluginBootstrap {
             final PreFlattenTagRegistrar<ItemType> registrar = event.registrar();
             registrar.setTag(RegistryTags.TOOLS, RegistryTags.TOOLS_SET);
             registrar.setTag(RegistryTags.SWORDS_AND_TOOLS, RegistryTags.SWORDS_AND_TOOLS_SET);
+            registrar.setTag(RegistryTags.HOES, RegistryTags.HOES_SET);
+            registrar.setTag(RegistryTags.AXES, RegistryTags.AXES_SET);
+            registrar.setTag(RegistryTags.SHOVELS, RegistryTags.SHOVELS_SET);
+            registrar.setTag(RegistryTags.PICKAXES, RegistryTags.PICKAXES_SET);
+            registrar.setTag(RegistryTags.RANGED, RegistryTags.RANGED_SET);
         });
         
 
