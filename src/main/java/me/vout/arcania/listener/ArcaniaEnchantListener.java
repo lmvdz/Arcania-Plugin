@@ -4,9 +4,6 @@ import me.vout.arcania.Arcania;
 import me.vout.arcania.enchant.ArcaniaEnchant;
 import me.vout.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.arcania.enchant.hoe.TillerEnchant;
-import me.vout.arcania.enchant.pickaxe.EnrichmentEnchant;
-import me.vout.arcania.enchant.pickaxe.QuarryEnchant;
-import me.vout.arcania.enchant.pickaxe.VeinminerEnchant;
 import me.vout.arcania.enchant.tool.MagnetEnchant;
 import me.vout.arcania.enchant.weapon.EssenceEnchant;
 import me.vout.arcania.enchant.weapon.FrostbiteEnchant;
@@ -15,10 +12,7 @@ import me.vout.arcania.util.ItemHelper;
 import me.vout.arcania.util.ToolHelper;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
@@ -42,26 +36,10 @@ public class ArcaniaEnchantListener implements Listener {
         if (item.getType().isAir() ||  !ItemHelper.isBlockBreakTool(item.getType())) return;
 
         Map<ArcaniaEnchant, Integer> activeEnchants = EnchantHelper.getItemEnchants(item);
+
         if (activeEnchants.isEmpty()) return;
 
-        if (activeEnchants.containsKey(QuarryEnchant.INSTANCE) &&
-                event.getBlock().isPreferredTool(item)) {
-            QuarryEnchant.onProc(player, item, event, activeEnchants);
-        }
-        if (!event.isCancelled() &&
-                activeEnchants.containsKey(VeinminerEnchant.INSTANCE)) {
-            VeinminerEnchant.onProc(player, event, activeEnchants);
-        }
-
-        if (!event.isCancelled() &&
-        activeEnchants.containsKey(EnrichmentEnchant.INSTANCE)) {
-            EnrichmentEnchant.onProc(player, item, event, activeEnchants);
-        }
-
-        if (!event.isCancelled() &&
-                activeEnchants.containsKey(MagnetEnchant.INSTANCE)) {
-            ToolHelper.customBreakBlock(player, event.getBlock(), item, activeEnchants);
-        }
+        ToolHelper.customBreakBlock(player, event, item, activeEnchants);
     }
 
     @EventHandler

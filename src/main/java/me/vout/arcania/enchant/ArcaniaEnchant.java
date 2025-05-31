@@ -1,6 +1,7 @@
 package me.vout.arcania.enchant;
 
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 
 import java.util.function.Predicate;
 
@@ -10,6 +11,7 @@ public abstract class ArcaniaEnchant {
     private final int weight;
     private final String description;
     private final EnchantRarityEnum rarity;
+    public static final String KEY = "arcania_enchants";
     private final Predicate<Material> canApplyPredicate;
     private final int max;
 
@@ -23,7 +25,11 @@ public abstract class ArcaniaEnchant {
         this.canApplyPredicate = canApplyPredicate;
     }
 
-    public boolean isCompatibleWith(ArcaniaEnchant other) {
+    public boolean isCompatibleWith(Enchantment enchantment) {
+        return true;
+    }
+
+    public boolean isCompatibleWith(ArcaniaEnchant arcaniaEnchant) {
         return true;
     }
 

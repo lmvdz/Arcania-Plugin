@@ -1,0 +1,30 @@
+name: Arcania
+version: '${project.version}'
+main: me.vout.paper.arcania.Arcania
+api-version: '1.21'
+load: STARTUP
+authors: [Vout, Lmvdzande]
+description: Custom enchants plugin
+commands:
+  arcania:
+    description: Main command for Arcania plugin
+    usage: /<command> [reload|menu|tinkerer|disenchanter|enchanter|enchants]
+    permission: arcania.menu
+    permission-message: You do not have permission!
+  enchants:
+    description: Opens the enchants menu
+    usage: /<command>
+    permission: arcania.menu.enchants
+    permission-message: You do not have permission!
+
+permissions:
+  arcania.reload:
+    description: Allows reloading the plugin
+    default: op
+  arcania.menu:
+    description: Allows using the main command
+    default: true
+  arcania.menu.enchants:
+    description: Allows using the enchantment menu command
+    default: true
+
