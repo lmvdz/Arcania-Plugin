@@ -2,10 +2,7 @@ package me.vout.spigot.arcania;
 
 import java.util.Objects;
 
-import org.bukkit.Registry;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.event.HandlerList;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.vout.spigot.arcania.command.ArcaniaCommand;
