@@ -1,5 +1,6 @@
 package me.vout.spigot.arcania.gui.tinkerer;
 
+import de.tr7zw.nbtapi.NBT;
 import me.vout.spigot.arcania.enchant.ArcaniaEnchant;
 import me.vout.spigot.arcania.util.EnchantHelper;
 import me.vout.spigot.arcania.util.ItemHelper;
@@ -108,7 +109,6 @@ public class TinkererMenuHandler {
                 Map<ArcaniaEnchant, Integer> enchantsToAdd = new HashMap<>();
 
                 ItemStack outputItem = input1.clone();
-                ItemMeta outputMeta = outputItem.getItemMeta();
                 boolean canApplyAny = false;
 
                 for (ArcaniaEnchant enchant: enchantBookMap.keySet()) {
@@ -131,26 +131,7 @@ public class TinkererMenuHandler {
                             }
                         });
                     }
-
-                    // sorts enchants by rarity, by name and by level
-                    List<Map.Entry<ArcaniaEnchant, Integer>> sortedEnchants = new ArrayList<>(enchantsToAdd.entrySet());
-                    sortedEnchants.sort(Comparator
-                            .comparing((Map.Entry<ArcaniaEnchant, Integer> e) -> e.getKey().getRarity().getCost())
-                            .thenComparing(e -> e.getKey().getName(), String.CASE_INSENSITIVE_ORDER));
-
-                    List<String> lore = new ArrayList<>();
-                    for (Map.Entry<ArcaniaEnchant, Integer> entry : sortedEnchants) {
-                        ArcaniaEnchant enchant = entry.getKey();
-                        int level = entry.getValue();
-                        lore.add(ItemHelper.colorizeHex(String.format("%s%s %s",
-                                enchant.getRarity().getColor(),
-                                enchant.getName(),
-                                ItemHelper.intToRoman(level)
-                        )));
-                    }
-                    if (outputMeta != null) outputMeta.setLore(lore);
-                    outputItem.setItemMeta(outputMeta);
-                    return outputItem;
+                    return setOutputData(outputItem, enchantsToAdd);
                 }
                 return null; //input1.clone(); maybe enchant is a clone?
             }
@@ -164,7 +145,6 @@ public class TinkererMenuHandler {
 
             Map<ArcaniaEnchant, Integer> enchantsToAdd = new HashMap<>();
             ItemStack outputItem = input1.clone();
-            ItemMeta outputMeta = outputItem.getItemMeta();
 
             for (ArcaniaEnchant enchant: enchantItemMap.keySet()) {
                 enchantsToAdd.put(enchant, enchantItemMap.get(enchant));
@@ -184,25 +164,7 @@ public class TinkererMenuHandler {
             }
 
             if (enchantsToAdd.isEmpty()) return null;
-
-            List<Map.Entry<ArcaniaEnchant, Integer>> sortedEnchants = new ArrayList<>(enchantsToAdd.entrySet());
-            sortedEnchants.sort(Comparator
-                    .comparing((Map.Entry<ArcaniaEnchant, Integer> e) -> e.getKey().getRarity().getCost())
-                    .thenComparing(e -> e.getKey().getName(), String.CASE_INSENSITIVE_ORDER));
-
-            List<String> lore = new ArrayList<>();
-            for (Map.Entry<ArcaniaEnchant, Integer> entry : sortedEnchants) {
-                ArcaniaEnchant enchant = entry.getKey();
-                int level = entry.getValue();
-                lore.add(ItemHelper.colorizeHex(String.format("%s%s %s",
-                        enchant.getRarity().getColor(),
-                        enchant.getName(),
-                        ItemHelper.intToRoman(level)
-                )));
-            }
-            if (outputMeta != null) outputMeta.setLore(lore);
-            outputItem.setItemMeta(outputMeta);
-            return outputItem;
+            return setOutputData(outputItem, enchantsToAdd);
         }
         else if (input1.getType() == Material.ENCHANTED_BOOK &&
                 input2.getType() == Material.ENCHANTED_BOOK) {
@@ -212,7 +174,6 @@ public class TinkererMenuHandler {
                 Map<ArcaniaEnchant, Integer> enchantsToAdd = new HashMap<>();
 
                 ItemStack outputItem = input1.clone();
-                ItemMeta outputMeta = outputItem.getItemMeta();
                 boolean canApplyAny = false;
 
                 for (ArcaniaEnchant enchant: enchantBook2Map.keySet()) {
@@ -236,30 +197,58 @@ public class TinkererMenuHandler {
                             }
                         });
                     }
-
-                    // sorts enchants by rarity, by name and by level
-                    List<Map.Entry<ArcaniaEnchant, Integer>> sortedEnchants = new ArrayList<>(enchantsToAdd.entrySet());
-                    sortedEnchants.sort(Comparator
-                            .comparing((Map.Entry<ArcaniaEnchant, Integer> e) -> e.getKey().getRarity().getCost())
-                            .thenComparing(e -> e.getKey().getName(), String.CASE_INSENSITIVE_ORDER));
-
-                    List<String> lore = new ArrayList<>();
-                    for (Map.Entry<ArcaniaEnchant, Integer> entry : sortedEnchants) {
-                        ArcaniaEnchant enchant = entry.getKey();
-                        int level = entry.getValue();
-                        lore.add(ItemHelper.colorizeHex(String.format("%s%s %s",
-                                enchant.getRarity().getColor(),
-                                enchant.getName(),
-                                ItemHelper.intToRoman(level)
-                        )));
-                    }
-                    if (outputMeta != null) outputMeta.setLore(lore);
-                    outputItem.setItemMeta(outputMeta);
-                    return outputItem;
+                    return setOutputData(outputItem, enchantsToAdd);
                 }
-                return null;
             }
         }
         return null;
+    }
+
+    private static ItemStack setOutputData(ItemStack outputItem, Map<ArcaniaEnchant, Integer> enchantsToAdd) {
+        // sorts enchants by rarity, by name and by level
+        List<Map.Entry<ArcaniaEnchant, Integer>> sortedEnchants = new ArrayList<>(enchantsToAdd.entrySet());
+        sortedEnchants.sort(Comparator
+                .comparing((Map.Entry<ArcaniaEnchant, Integer> e) -> e.getKey().getRarity().getCost())
+                .thenComparing(e -> e.getKey().getName(), String.CASE_INSENSITIVE_ORDER));
+
+        NBT.modify(outputItem, nbt -> {
+            //Get or create the nbt base path we want
+            var nbtCompound = nbt.getOrCreateCompound("arcania").getOrCreateCompound("enchants");
+            //wipe the existing enchant area clean
+
+            Set<String> keys = nbtCompound.getKeys();
+            for (String key : keys) {
+                nbtCompound.removeKey(key);
+            }
+
+            // Store the new enchant data, going through all existing enchants and storing
+            for (Map.Entry<ArcaniaEnchant, Integer> entry : sortedEnchants) {
+                ArcaniaEnchant enchant = entry.getKey();
+                int level = entry.getValue();
+                nbtCompound.setString(enchant.getName(), String.valueOf(level));
+                //Or do nbtCompound.setInteger if you prefer it to be a integer
+            }
+        });
+
+        // grabs the meta data including new nbt data
+        ItemMeta outputMeta = outputItem.getItemMeta();
+
+        // Now we add the display data
+        List<String> lore = new ArrayList<>();
+        for (Map.Entry<ArcaniaEnchant, Integer> entry : sortedEnchants) {
+            ArcaniaEnchant enchant = entry.getKey();
+            int level = entry.getValue();
+            lore.add(ItemHelper.colorizeHex(String.format("%s%s %s",
+                    enchant.getRarity().getColor(),
+                    enchant.getName(),
+                    ItemHelper.intToRoman(level)
+            )));
+        }
+
+        if (outputMeta != null) {
+            outputMeta.setLore(lore);
+            outputItem.setItemMeta(outputMeta);
+        }
+        return outputItem;
     }
 }

@@ -1,17 +1,14 @@
 package me.vout.spigot.arcania.util;
 
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.iface.ReadableNBT;
 import me.vout.spigot.arcania.Arcania;
-import me.vout.spigot.arcania.gui.PersistentDataEnum;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataType;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -127,25 +124,14 @@ public class ItemHelper {
     }
 
     public static boolean isArcaniaEnchant(ItemStack item) {
-        ItemMeta meta = item.getItemMeta();
-        NamespacedKey key = new NamespacedKey(Arcania.getInstance(), PersistentDataEnum.ENCHANT.toString());
-        if (meta == null) return false;
-        return meta.getPersistentDataContainer().has(key, PersistentDataType.STRING);
-    }
-
-    public static int romanToInt(String roman) {
-        return switch (roman) {
-            case "II" -> 2;
-            case "III" -> 3;
-            case "IV" -> 4;
-            case "V" -> 5;
-            case "VI" -> 6;
-            case "VII" -> 7;
-            case "VIII" -> 8;
-            case "IX" -> 9;
-            case "X" -> 10;
-            default -> 1;
-        };
+        if (item.getType().isAir()) return false;
+        return NBT.get(item, nbt -> {
+            if (nbt != null) {
+                ReadableNBT enchantsCompound = nbt.resolveCompound("arcania.enchants");
+                return enchantsCompound != null;
+            }
+            return false;
+        });
     }
 
     public static String intToRoman(int num) {

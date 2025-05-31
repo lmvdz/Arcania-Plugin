@@ -6,7 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="Arcania" />
+        <module name="Arcania-Spigot" />
+        <module name="Arcania-Paper" />
       </profile>
     </annotationProcessing>
   </component>
