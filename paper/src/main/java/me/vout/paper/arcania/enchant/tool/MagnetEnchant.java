@@ -116,7 +116,9 @@ public class MagnetEnchant extends ArcaniaEnchant {
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
-        return RegistrySet.keySet(RegistryKey.ITEM, 
+        return RegistrySet.keySet(RegistryKey.ITEM,
+            ItemTypeKeys.BOOK,
+            ItemTypeKeys.SHEARS,
             ItemTypeKeys.ENCHANTED_BOOK, 
             
             ItemTypeKeys.WOODEN_PICKAXE,
@@ -168,7 +170,9 @@ public class MagnetEnchant extends ArcaniaEnchant {
 
     @Override
     public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
-        return RegistrySet.keySet(RegistryKey.ITEM, 
+        return RegistrySet.keySet(RegistryKey.ITEM,
+            ItemTypeKeys.BOOK,
+            ItemTypeKeys.SHEARS,
             ItemTypeKeys.ENCHANTED_BOOK, 
 
             ItemTypeKeys.WOODEN_PICKAXE,

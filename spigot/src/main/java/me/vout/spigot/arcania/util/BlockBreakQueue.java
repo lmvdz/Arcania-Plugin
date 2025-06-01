@@ -31,7 +31,12 @@ public class BlockBreakQueue {
         private final Location dropLocation;
         private final boolean hasMagnet;
 
-        public BlockBreakData(ItemStack tool, Block block, List<ItemStack> drops, float experience, Location dropLocation, boolean hasMagnet) {
+        public BlockBreakData(ItemStack tool,
+                              Block block,
+                              List<ItemStack> drops,
+                              float experience,
+                              Location dropLocation,
+                              boolean hasMagnet) {
             this.tool = tool;
             this.block = block;
             this.drops = drops;

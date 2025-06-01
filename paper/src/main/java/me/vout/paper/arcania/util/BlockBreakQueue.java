@@ -31,7 +31,12 @@ public class BlockBreakQueue {
         private final Location dropLocation;
         private final boolean hasMagnet;
 
-        public BlockBreakData(ItemStack tool, Block block, List<ItemStack> drops, float experience, Location dropLocation, boolean hasMagnet) {
+        public BlockBreakData(ItemStack tool,
+                              Block block,
+                              List<ItemStack> drops,
+                              float experience,
+                              Location dropLocation,
+                              boolean hasMagnet) {
             this.tool = tool;
             this.block = block;
             this.drops = drops;
@@ -110,7 +115,6 @@ public class BlockBreakQueue {
         if (data.experience > 0) {
             cummulativePlayerExperience.put(player, cummulativePlayerExperience.getOrDefault(player, 0f) + data.experience);
             float cummulativeExperience = cummulativePlayerExperience.get(player);
-            // Arcania.getInstance().getLogger().log(Level.INFO, "cummulativeExperience: " + cummulativeExperience);
             if (cummulativeExperience >= 1) {
                 Location expLocation = data.dropLocation.clone().add(0.5, 0.5, 0.5);
                 int experienceToGive = (int) Math.floor(cummulativeExperience); 

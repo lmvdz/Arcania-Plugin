@@ -15,6 +15,7 @@ import me.vout.paper.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.paper.arcania.enchant.pickaxe.SmeltEnchant;
 import me.vout.paper.arcania.enchant.pickaxe.VeinminerEnchant;
 import me.vout.paper.arcania.enchant.tool.MagnetEnchant;
+import me.vout.paper.arcania.enchant.tool.ProsperityEnchant;
 import me.vout.paper.arcania.enchant.weapon.EssenceEnchant;
 import me.vout.paper.arcania.enchant.weapon.FrostbiteEnchant;
 import net.kyori.adventure.key.Key;
@@ -34,6 +35,7 @@ public class ArcaniaEnchantManager {
     private void enchantInit() {
         enchants.add(QuarryEnchant.INSTANCE);
         enchants.add(TillerEnchant.INSTANCE);
+        enchants.add(ProsperityEnchant.INSTANCE);
         enchants.add(BlinkEnchant.INSTANCE);
         enchants.add(EnrichmentEnchant.INSTANCE);
         enchants.add(HarvesterEnchant.INSTANCE);

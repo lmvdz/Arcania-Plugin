@@ -8,6 +8,7 @@ import me.vout.spigot.arcania.enchant.pickaxe.EnrichmentEnchant;
 import me.vout.spigot.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.spigot.arcania.enchant.pickaxe.VeinminerEnchant;
 import me.vout.spigot.arcania.enchant.tool.MagnetEnchant;
+import me.vout.spigot.arcania.enchant.tool.ProsperityEnchant;
 import me.vout.spigot.arcania.enchant.tool.SmeltEnchant;
 import me.vout.spigot.arcania.enchant.weapon.EssenceEnchant;
 import me.vout.spigot.arcania.enchant.weapon.FrostbiteEnchant;
@@ -30,6 +31,7 @@ public class ArcaniaEnchantManager {
     private void enchantInit() {
         enchants.add(QuarryEnchant.INSTANCE);
         enchants.add(TillerEnchant.INSTANCE);
+        enchants.add(ProsperityEnchant.INSTANCE);
         enchants.add(BlinkEnchantment.INSTANCE);
         enchants.add(EnrichmentEnchant.INSTANCE);
         enchants.add(HarvesterEnchant.INSTANCE);

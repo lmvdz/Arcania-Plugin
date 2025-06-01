@@ -6,14 +6,13 @@ import me.vout.spigot.arcania.enchant.pickaxe.EnrichmentEnchant;
 import me.vout.spigot.arcania.enchant.pickaxe.QuarryEnchant;
 import me.vout.spigot.arcania.enchant.pickaxe.VeinminerEnchant;
 import me.vout.spigot.arcania.enchant.tool.MagnetEnchant;
+import me.vout.spigot.arcania.enchant.tool.ProsperityEnchant;
 import me.vout.spigot.arcania.enchant.tool.SmeltEnchant;
 import me.vout.spigot.arcania.enchant.weapon.EssenceEnchant;
 import org.bukkit.Location;
-
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
-
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -53,15 +52,12 @@ public class ToolHelper {
 
         // get the block to break
         Block block = event.getBlock();
-        // Arcania.getInstance().getLogger().log(Level.INFO, "block: " + block.getType().getHardness());
 
-        
         // prepare xp to give
         final float[] xpToGive = {event.getExpToDrop()};
 
         // prepare list of blocks to attempt to break
         List<Block> additionalBlocksToBreak = new ArrayList<>();
-
 
         /**
          * 
@@ -71,8 +67,6 @@ public class ToolHelper {
         // then process magnet to collect the drops + xp
         boolean hasMagnet = enchants.containsKey(MagnetEnchant.INSTANCE);
         Location dropLocation = hasMagnet ? player.getLocation() : block.getLocation();
-
-
 
          /**
          * 
@@ -92,31 +86,19 @@ public class ToolHelper {
         boolean hasQuarry = enchants.containsKey(QuarryEnchant.INSTANCE);
         boolean hasQuarryMetadata = block.hasMetadata("arcania:quarried");
 
-        // Arcania.getInstance().getLogger().log(Level.INFO, "hasQuarry: " + hasQuarry);
-        // Arcania.getInstance().getLogger().log(Level.INFO, "hasQuarryMetadata: " + hasQuarryMetadata);
-
         if (hasQuarry && !hasQuarryMetadata && !hasVeinminerMetadata) {
-            // Arcania.getInstance().getLogger().log(Level.INFO, "hasQuarry!");
             QuarryEnchant.getBlocksToBreak(player, tool, event, additionalBlocksToBreak);
             additionalBlocksToBreak.forEach(blockToBreak -> {
                 blockToBreak.setMetadata("arcania:quarried", new FixedMetadataValue(Arcania.getInstance(), true));
             });
         }
 
-        Arcania.getInstance().getLogger().log(Level.INFO, "additionalBlocksToBreak: " + additionalBlocksToBreak.size());
-       
-
-        Arcania.getInstance().getLogger().log(Level.INFO, "hasVeinminer: " + hasVeinminer);
-        Arcania.getInstance().getLogger().log(Level.INFO, "hasVeinminerMetadata: " + hasVeinminerMetadata);
-
         if (hasVeinminer && !hasVeinminerMetadata) {
-            // Arcania.getInstance().getLogger().log(Level.INFO, "hasVeinminer!");
             List<Block> veinminerQueue = new ArrayList<>();
             veinminerQueue.add(block);
             veinminerQueue.addAll(additionalBlocksToBreak);
             for (Block blockToBreak : veinminerQueue) {
                 if (VeinminerEnchant.isVeinMineBlock(blockToBreak.getType())) {
-                    Arcania.getInstance().getLogger().log(Level.INFO, "blockToBreak: " + blockToBreak.getType() + ' ' + blockToBreak.getLocation().toString());
                     VeinminerEnchant.getBlocksToBreak(player, blockToBreak, enchants, additionalBlocksToBreak);
 
                     additionalBlocksToBreak.forEach(veinMineBlock -> {
@@ -127,21 +109,13 @@ public class ToolHelper {
         }
 
         int cumulativeDamage = 0;
-        Arcania.getInstance().getLogger().log(Level.INFO, "additionalBlocksToBreak: " + additionalBlocksToBreak.size());
         // Track tool durability and break blocks until tool breaks
         for (Block blockToBreak : additionalBlocksToBreak.stream().distinct().toList()) {
             boolean blockToBreakHasMetadata = false;
-            if (blockToBreak == null) {
-                Arcania.getInstance().getLogger().log(Level.INFO, "blockToBreak is null");
-                continue;
-            }
-            Arcania.getInstance().getLogger().log(Level.INFO, "blockToBreak: " + blockToBreak.getType() + ' ' + blockToBreak.getLocation().toString());
+            if (blockToBreak == null) continue;
 
             blockToBreakHasMetadata = blockToBreak.hasMetadata("arcania:quarried") || blockToBreak.hasMetadata("arcania:veinmined");
-            Arcania.getInstance().getLogger().log(Level.INFO, "blockToBreakHasMetadata: " + blockToBreak.getType() + ' ' + blockToBreak.getLocation().toString());
-            if (!blockToBreakHasMetadata) {
-                continue;
-            }
+            if (!blockToBreakHasMetadata) continue;
 
             // Simulate if tool would survive breaking this block
             int damage = simulateToolDamage(tool, 1);
@@ -154,6 +128,7 @@ public class ToolHelper {
         }
 
         boolean hasSmelting = enchants.containsKey(SmeltEnchant.INSTANCE);
+        int prosperityLevel = enchants.getOrDefault(ProsperityEnchant.INSTANCE, 0);
         List<ItemStack> blockDrops = new ArrayList<>();
 
         // Calculate drops and XP
@@ -174,6 +149,10 @@ public class ToolHelper {
             } else {
                 blockDrops.add(itemStack);
             }
+            if (prosperityLevel > 0 && ProsperityEnchant.shouldApplyEffect(prosperityLevel)) { // each block applies its own chance
+                ItemStack item = blockDrops.get(blockDrops.size() -1);
+                item.setAmount(item.getAmount() * 2);
+            }
         });
         
 
@@ -184,25 +163,17 @@ public class ToolHelper {
          */
         // process enrichment to modify the xp before giving it
         boolean hasEnrichment = enchants.containsKey(EnrichmentEnchant.INSTANCE);
-        // Arcania.getInstance().getLogger().log(Level.INFO, "hasEnrichment: " + hasEnrichment);
         
         // give the xp
         if (xpToGive[0] > 0) {
             if (hasEnrichment) {
-                Arcania.getInstance().getLogger().log(Level.INFO, "xpToGive before enrichment: " + xpToGive[0]);
-                Arcania.getInstance().getLogger().log(Level.INFO, "enrichment level: " + enchants.get(EnrichmentEnchant.INSTANCE));
-                xpToGive[0] = EssenceEnchant.getScaledXP(xpToGive[0], enchants.get(EnrichmentEnchant.INSTANCE)); 
-                Arcania.getInstance().getLogger().log(Level.INFO, "xpToGive after enrichment: " + xpToGive[0]);
-            } else {
-                Arcania.getInstance().getLogger().log(Level.INFO, "xpToGive:" + xpToGive[0]);
+                xpToGive[0] = EssenceEnchant.getScaledXP(xpToGive[0], enchants.get(EnrichmentEnchant.INSTANCE));
             }
-            
-            // block.getWorld().spawn(dropLocation.add(0.5, 0.5, 0.5), ExperienceOrb.class).setExperience((int)xpToGive[0]);
         }
 
         // clear the drops from the original block since we're using the queue to break the blocks
         event.setDropItems(false);
-
+        event.setExpToDrop(0);
 
         // Queue the block break
         BlockBreakQueue.queueBlockBreak(
@@ -216,9 +187,6 @@ public class ToolHelper {
                 hasMagnet
             )
         );
-
-        
-
     }
     
 
