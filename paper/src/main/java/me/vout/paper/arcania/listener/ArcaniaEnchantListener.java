@@ -2,6 +2,8 @@ package me.vout.paper.arcania.listener;
 
 import java.util.Map;
 
+import me.vout.paper.arcania.enchant.bow.BlinkEnchant;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -95,10 +97,12 @@ public class ArcaniaEnchantListener implements Listener {
 
     @EventHandler
     public void onEntityShootBow(EntityShootBowEvent event) {
-        if (!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player player)) return;
         if (!(event.getProjectile() instanceof Arrow arrow)) return;
+        ItemStack offhand = player.getInventory().getItemInOffHand();
 
         ItemStack bow = event.getBow();
+        if (bow == null) return;
         Map<Enchantment, Integer> enchants = bow.getEnchantments();
         Enchantment frostbiteEnchant = Arcania.getEnchantRegistry().get(FrostbiteEnchant.INSTANCE.getKey());
         if (enchants.containsKey(frostbiteEnchant)) {
@@ -109,6 +113,9 @@ public class ArcaniaEnchantListener implements Listener {
                     level
             );
         }
+        Enchantment blinkEnchant = Arcania.getEnchantRegistry().get(BlinkEnchant.INSTANCE.getKey());
+        if (enchants.containsKey(blinkEnchant) && offhand.getType() == Material.ENDER_PEARL)
+            BlinkEnchant.onProc(player, event, offhand);
     }
 
     @EventHandler
