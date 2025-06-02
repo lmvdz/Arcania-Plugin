@@ -1,16 +1,7 @@
 package me.vout.spigot.arcania.listener;
 
-import me.vout.spigot.arcania.Arcania;
-import me.vout.spigot.arcania.enchant.ArcaniaEnchant;
-import me.vout.spigot.arcania.enchant.bow.BlinkEnchantment;
-import me.vout.spigot.arcania.enchant.hoe.HarvesterEnchant;
-import me.vout.spigot.arcania.enchant.hoe.TillerEnchant;
-import me.vout.spigot.arcania.enchant.tool.MagnetEnchant;
-import me.vout.spigot.arcania.enchant.weapon.EssenceEnchant;
-import me.vout.spigot.arcania.enchant.weapon.FrostbiteEnchant;
-import me.vout.spigot.arcania.util.EnchantHelper;
-import me.vout.spigot.arcania.util.ItemHelper;
-import me.vout.spigot.arcania.util.ToolHelper;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -29,7 +20,17 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
-import java.util.Map;
+import me.vout.spigot.arcania.Arcania;
+import me.vout.spigot.arcania.enchant.ArcaniaEnchant;
+import me.vout.spigot.arcania.enchant.bow.BlinkEnchantment;
+import me.vout.spigot.arcania.enchant.hoe.HarvesterEnchant;
+import me.vout.spigot.arcania.enchant.hoe.TillerEnchant;
+import me.vout.spigot.arcania.enchant.tool.MagnetEnchant;
+import me.vout.spigot.arcania.enchant.weapon.EssenceEnchant;
+import me.vout.spigot.arcania.enchant.weapon.FrostbiteEnchant;
+import me.vout.spigot.arcania.util.EnchantHelper;
+import me.vout.spigot.arcania.util.ItemHelper;
+import me.vout.spigot.arcania.util.ToolHelper;
 
 public class ArcaniaEnchantListener implements Listener {
 

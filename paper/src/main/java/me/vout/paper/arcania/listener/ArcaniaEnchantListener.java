@@ -2,7 +2,6 @@ package me.vout.paper.arcania.listener;
 
 import java.util.Map;
 
-import me.vout.paper.arcania.enchant.bow.BlinkEnchant;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.block.Block;
@@ -18,11 +17,14 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
 import me.vout.paper.arcania.Arcania;
+import me.vout.paper.arcania.enchant.bow.BlinkEnchant;
+import me.vout.paper.arcania.enchant.bow.GravityEnchant;
 import me.vout.paper.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.paper.arcania.enchant.hoe.TillerEnchant;
 import me.vout.paper.arcania.enchant.tool.MagnetEnchant;
@@ -92,6 +94,22 @@ public class ArcaniaEnchantListener implements Listener {
             } else if (enchants.containsKey(magnetEnchant)) {
                 MagnetEnchant.onProc(player, event, event.getDroppedExp());
             }
+        }
+    }
+
+    @EventHandler
+    public void onProjectileHit(ProjectileHitEvent event) {
+        if (!(event.getEntity() instanceof Arrow arrow)) return;
+        if (!(arrow.getShooter() instanceof LivingEntity entity)) return;
+        Arcania.getInstance().getLogger().info("Projectile hit");
+        ItemStack bow = entity.getEquipment().getItemInMainHand();
+        Arcania.getInstance().getLogger().info("Bow: " + bow);
+        Map<Enchantment, Integer> enchants = bow.getEnchantments();
+        Arcania.getInstance().getLogger().info("Enchants: " + enchants);
+        Enchantment gravityEnchant = Arcania.getEnchantRegistry().get(GravityEnchant.INSTANCE.getKey());
+        if (enchants.containsKey(gravityEnchant)) {
+            Arcania.getInstance().getLogger().info("Gravity enchant found");
+            GravityEnchant.onProc(entity, event);
         }
     }
 

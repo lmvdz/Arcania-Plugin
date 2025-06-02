@@ -10,8 +10,8 @@ import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ItemType;
@@ -21,6 +21,7 @@ import org.jetbrains.annotations.Nullable;
 import io.papermc.paper.enchantments.EnchantmentRarity;
 import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.tag.TagKey;
+import me.vout.paper.arcania.Arcania;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
 import me.vout.paper.arcania.item.registry.RegistryTags;
 import net.kyori.adventure.text.Component;
@@ -43,13 +44,14 @@ public class GravityEnchant extends ArcaniaEnchant {
         );
     }
 
-    public static void onProc(Player player, EntityShootBowEvent event, ItemStack offhand) {
-        event.setCancelled(true);
-        Location location = event.getProjectile().getLocation();
+    public static void onProc(LivingEntity entity, ProjectileHitEvent event) {
+        Location location = event.getEntity().getLocation();
+        Arcania.getInstance().getLogger().info("Location: " + location);
         List<Entity> nearbyEntities = new ArrayList<>(location.getNearbyEntities(10, 10, 10));
-        for (Entity entity : nearbyEntities) {
+        Arcania.getInstance().getLogger().info("Nearby entities: " + nearbyEntities);
+        for (Entity nearbyEntity : nearbyEntities) {
             // pull in the entities towwards the bowshootevent target location
-            entity.teleport(location);
+            nearbyEntity.teleport(location);
         }
     }
 

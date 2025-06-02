@@ -146,25 +146,22 @@ public class ToolHelper {
 
         // Calculate drops and XP
         block.getDrops(tool).forEach(itemStack -> {
+            ItemStack itemToAdd = itemStack.clone();
             if (hasSmelting) {
                 FurnaceRecipe furnaceRecipe = FurnaceRecipeHelper.getFurnaceRecipeForItemStack(itemStack);
                 if (furnaceRecipe != null) {
-                    ItemStack smeltedItemStack = furnaceRecipe.getResult().clone();
-                    smeltedItemStack.setAmount(itemStack.getAmount());
-                    blockDrops.add(smeltedItemStack);
+                    itemToAdd = furnaceRecipe.getResult().clone();
+                    itemToAdd.setAmount(itemStack.getAmount());
+                    
                     float experienceToGive = furnaceRecipe.getExperience();
                     xpToGive[0] += experienceToGive;
 
-                } else {
-                    blockDrops.add(itemStack);
                 }
-            } else {
-                blockDrops.add(itemStack);
             }
             if (prosperityLevel > 0 && ProsperityEnchant.shouldApplyEffect(prosperityLevel)) {
-                ItemStack item = blockDrops.get(blockDrops.size() -1);
-                item.setAmount(item.getAmount() * 2);
+                itemToAdd.setAmount(itemToAdd.getAmount() * 2);
             }
+            blockDrops.add(itemToAdd);
         });
 
         /**
