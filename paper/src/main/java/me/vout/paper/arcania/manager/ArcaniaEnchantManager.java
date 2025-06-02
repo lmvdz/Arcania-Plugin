@@ -8,6 +8,7 @@ import java.util.Map;
 
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
 import me.vout.paper.arcania.enchant.bow.BlinkEnchant;
+import me.vout.paper.arcania.enchant.bow.GravityEnchant;
 import me.vout.paper.arcania.enchant.hoe.HarvesterEnchant;
 import me.vout.paper.arcania.enchant.hoe.TillerEnchant;
 import me.vout.paper.arcania.enchant.pickaxe.EnrichmentEnchant;
@@ -37,6 +38,7 @@ public class ArcaniaEnchantManager {
         enchants.add(TillerEnchant.INSTANCE);
         enchants.add(ProsperityEnchant.INSTANCE);
         enchants.add(BlinkEnchant.INSTANCE);
+        enchants.add(GravityEnchant.INSTANCE);
         enchants.add(EnrichmentEnchant.INSTANCE);
         enchants.add(HarvesterEnchant.INSTANCE);
         enchants.add(FrostbiteEnchant.INSTANCE);

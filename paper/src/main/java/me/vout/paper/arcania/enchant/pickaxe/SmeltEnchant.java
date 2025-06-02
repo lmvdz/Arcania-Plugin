@@ -18,8 +18,7 @@ import io.papermc.paper.registry.keys.EnchantmentKeys;
 import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.set.RegistrySet;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
-import me.vout.paper.arcania.enchant.registry.RegistryTags;
-import net.kyori.adventure.text.Component;
+import me.vout.paper.arcania.item.registry.RegistryTags;
 
 public class SmeltEnchant extends ArcaniaEnchant {
     public static final SmeltEnchant INSTANCE = new SmeltEnchant();
@@ -30,17 +29,14 @@ public class SmeltEnchant extends ArcaniaEnchant {
             1,
             1,
             5,
+            1,
+            3,
             10,
             15,
             1
         );
     }
     
-
-    @Override
-    public @NotNull String getTranslationKey() {
-        return "enchantment." + NAMESPACE + "." + key;
-    }
 
     @Override
     public boolean canEnchantItem(@NotNull ItemStack arg0) {
@@ -52,25 +48,12 @@ public class SmeltEnchant extends ArcaniaEnchant {
         return false;
     }
 
-    @Override
-    public @NotNull Component description() {
-        return Component.text(description);
-    }
-
-    @Override
-    public @NotNull Component displayName(int arg0) {
-        return Component.text(name);
-    }
 
     @Override
     public @NotNull Set<EquipmentSlotGroup> getActiveSlotGroups() {
         return Set.of(EquipmentSlotGroup.MAINHAND);
     }
 
-    @Override
-    public int getAnvilCost() {
-        return anvilCost;
-    }
 
     @Override
     public float getDamageIncrease(int arg0, @NotNull EntityCategory arg1) {
@@ -90,20 +73,6 @@ public class SmeltEnchant extends ArcaniaEnchant {
         return RegistrySet.keySet(RegistryKey.ENCHANTMENT, EnchantmentKeys.SILK_TOUCH);
     }
 
-    @Override
-    public int getMaxLevel() {
-        return maxLevel;
-    }
-
-    @Override
-    public int getMaxModifiedCost(int arg0) {
-        return maxModifiedCost;
-    }
-
-    @Override
-    public int getMinModifiedCost(int arg0) {
-        return minModifiedCost;
-    }
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
@@ -115,20 +84,13 @@ public class SmeltEnchant extends ArcaniaEnchant {
         return EnchantmentRarity.RARE;
     }
 
-    @Override
-    public int getStartLevel() {
-        return startLevel;
-    }
 
     @Override
     public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
         return RegistrySet.keySet(RegistryTags.PICKAXES.registryKey());
     }
 
-    @Override
-    public int getWeight() {
-        return weight;
-    }
+
     @Override
     public boolean isCursed() {
         return false;
@@ -147,10 +109,7 @@ public class SmeltEnchant extends ArcaniaEnchant {
     public boolean isTreasure() {
         return false;
     }
-    @Override
-    public @NotNull String translationKey() {
-        return "enchantment." + NAMESPACE + "." + key;
-    }
+
 
     @Override
     public @NotNull EnchantmentTarget getItemTarget() {

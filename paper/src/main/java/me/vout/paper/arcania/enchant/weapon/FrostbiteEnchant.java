@@ -25,12 +25,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.keys.EnchantmentKeys;
 import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.set.RegistrySet;
 import me.vout.paper.arcania.Arcania;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
-import me.vout.paper.arcania.enchant.registry.RegistryTags;
-import net.kyori.adventure.text.Component;
+import me.vout.paper.arcania.item.registry.RegistryTags;
 
 public class FrostbiteEnchant extends ArcaniaEnchant {
     public static final FrostbiteEnchant INSTANCE = new FrostbiteEnchant();
@@ -43,8 +44,11 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
             2, 
             1, 
             10,
+            1,
+            3,
             10,
             15,
+            
             1
         );
     }
@@ -121,10 +125,6 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
             }
         }.runTaskTimer(Arcania.getInstance(), 0L, 5L); // Runs every 5 ticks (0.25s)
     }
-    @Override
-    public @NotNull String getTranslationKey() {
-        return "enchantment." + NAMESPACE + "." + key;
-    }
 
     @Override
     public boolean canEnchantItem(@NotNull ItemStack arg0) {
@@ -137,23 +137,8 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
     }
 
     @Override
-    public @NotNull Component description() {
-        return Component.text(description);
-    }
-
-    @Override
-    public @NotNull Component displayName(int arg0) {
-        return Component.text(name);
-    }
-
-    @Override
     public @NotNull Set<EquipmentSlotGroup> getActiveSlotGroups() {
         return Set.of(EquipmentSlotGroup.MAINHAND);
-    }
-
-    @Override
-    public int getAnvilCost() {
-        return anvilCost;
     }
 
     @Override
@@ -168,23 +153,10 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
     
     @Override
     public @NotNull RegistryKeySet<Enchantment> getExclusiveWith() {
-        return null;
+        return RegistrySet.keySet(RegistryKey.ENCHANTMENT, EnchantmentKeys.create(getKey()));
     }
 
-    @Override
-    public int getMaxLevel() {
-        return maxLevel;
-    }
 
-    @Override
-    public int getMaxModifiedCost(int arg0) {
-        return maxModifiedCost;
-    }
-
-    @Override
-    public int getMinModifiedCost(int arg0) {
-        return minModifiedCost;
-    }
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
@@ -196,20 +168,12 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
         return EnchantmentRarity.RARE;
     }
 
-    @Override
-    public int getStartLevel() {
-        return startLevel;
-    }
 
     @Override
     public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
         return RegistrySet.keySet(RegistryTags.SWORDS_AND_RANGED.registryKey());
     }
 
-    @Override
-    public int getWeight() {
-        return weight;
-    }
     @Override
     public boolean isCursed() {
         return false;
@@ -227,10 +191,6 @@ public class FrostbiteEnchant extends ArcaniaEnchant {
     @Override
     public boolean isTreasure() {
         return false;
-    }
-    @Override
-    public @NotNull String translationKey() {
-        return "enchantment." + NAMESPACE + "." + key;
     }
 
     @Override

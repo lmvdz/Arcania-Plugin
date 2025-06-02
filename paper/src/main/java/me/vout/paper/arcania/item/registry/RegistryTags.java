@@ -1,10 +1,9 @@
-package me.vout.paper.arcania.enchant.registry;
+package me.vout.paper.arcania.item.registry;
 
 import java.util.Set;
 
 import org.bukkit.inventory.ItemType;
 
-import io.papermc.paper.registry.RegistryKey;
 import io.papermc.paper.registry.keys.ItemTypeKeys;
 import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
 import io.papermc.paper.registry.tag.TagKey;
@@ -21,6 +20,7 @@ public class RegistryTags {
     public static final TagKey<ItemType> HOES = ItemTypeTagKeys.create(Key.key("arcania:hoes"));
     public static final TagKey<ItemType> SWORDS = ItemTypeTagKeys.create(Key.key("arcania:swords"));
     public static final TagKey<ItemType> RANGED = ItemTypeTagKeys.create(Key.key("arcania:ranged"));
+
 
 
     public static final Set<TagEntry<ItemType>> PICKAXES_SET = Set.of(
@@ -52,11 +52,15 @@ public class RegistryTags {
             TagEntry.tagEntry(ItemTypeTagKeys.SWORDS));
 
     public static final Set<TagEntry<ItemType>> RANGED_SET = Set.of(
-            TagEntry.tagEntry(TagKey.create(RegistryKey.ITEM, ItemTypeKeys.BOW)),
-            TagEntry.tagEntry(TagKey.create(RegistryKey.ITEM, ItemTypeKeys.CROSSBOW)));
+            TagEntry.tagEntry(ItemTypeTagKeys.ENCHANTABLE_BOW),
+            TagEntry.tagEntry(ItemTypeTagKeys.ENCHANTABLE_CROSSBOW),
+            TagEntry.valueEntry(ItemTypeKeys.BOW),
+            TagEntry.valueEntry(ItemTypeKeys.CROSSBOW));
 
     public static final Set<TagEntry<ItemType>> SWORDS_AND_RANGED_SET = Set.of(
             TagEntry.tagEntry(ItemTypeTagKeys.SWORDS),
-            TagEntry.tagEntry(TagKey.create(RegistryKey.ITEM, ItemTypeKeys.BOW)),
-            TagEntry.tagEntry(TagKey.create(RegistryKey.ITEM, ItemTypeKeys.CROSSBOW)));
+            TagEntry.valueEntry(ItemTypeKeys.BOW),
+            TagEntry.valueEntry(ItemTypeKeys.CROSSBOW));
+
+    
 }

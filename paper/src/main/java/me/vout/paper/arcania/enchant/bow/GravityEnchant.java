@@ -1,11 +1,13 @@
 package me.vout.paper.arcania.enchant.bow;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
-import org.bukkit.Sound;
+import org.bukkit.Location;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
-import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityCategory;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -17,20 +19,19 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
 import io.papermc.paper.registry.set.RegistryKeySet;
 import io.papermc.paper.registry.set.RegistrySet;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
 import me.vout.paper.arcania.item.registry.RegistryTags;
+import net.kyori.adventure.text.Component;
 
-public class BlinkEnchant extends ArcaniaEnchant {
-    public static final BlinkEnchant INSTANCE = new BlinkEnchant();
+public class GravityEnchant extends ArcaniaEnchant {
+    public static final GravityEnchant INSTANCE = new GravityEnchant();
 
-    private BlinkEnchant() {
-        super("Blink",
-                "blink",
-                "Shoot an ender pearl for further range",
+    private GravityEnchant() {
+        super("Gravity",
+                "gravity",
+                "Pull in nearby entities wherever the arrow lands",
                 1,
                 1,
                 10,
@@ -44,12 +45,12 @@ public class BlinkEnchant extends ArcaniaEnchant {
 
     public static void onProc(Player player, EntityShootBowEvent event, ItemStack offhand) {
         event.setCancelled(true);
-        EnderPearl pearl = player.launchProjectile(EnderPearl.class);
-        pearl.setVelocity(event.getProjectile().getVelocity());
-
-        offhand.setAmount(offhand.getAmount() - 1);
-        player.getInventory().setItemInOffHand(offhand);
-        player.getWorld().playSound(player.getLocation(), Sound.ENTITY_ENDER_PEARL_THROW, 0.4f, 1.0f);
+        Location location = event.getProjectile().getLocation();
+        List<Entity> nearbyEntities = new ArrayList<>(location.getNearbyEntities(10, 10, 10));
+        for (Entity entity : nearbyEntities) {
+            // pull in the entities towwards the bowshootevent target location
+            entity.teleport(location);
+        }
     }
 
     @Override
@@ -61,7 +62,17 @@ public class BlinkEnchant extends ArcaniaEnchant {
     public boolean conflictsWith(@NotNull Enchantment arg0) {
         return false;
     }
-    
+
+    @Override
+    public @NotNull Component description() {
+        return Component.text(description);
+    }
+
+    @Override
+    public @NotNull Component displayName(int arg0) {
+        return Component.text(name);
+    }
+
     @Override
     public @NotNull Set<EquipmentSlotGroup> getActiveSlotGroups() {
         return Set.of(EquipmentSlotGroup.MAINHAND);
@@ -80,7 +91,7 @@ public class BlinkEnchant extends ArcaniaEnchant {
 
     @Override
     public @NotNull RegistryKeySet<Enchantment> getExclusiveWith() {
-        return RegistrySet.keySet(RegistryKey.ENCHANTMENT, EnchantmentKeys.create(getKey()));
+        return null;
     }
 
 
@@ -95,28 +106,16 @@ public class BlinkEnchant extends ArcaniaEnchant {
     }
 
     @Override
-    public int getStartLevel() {
-        return startLevel;
-    }
-
-    @Override
     public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
         return RegistrySet.keySet(RegistryTags.RANGED.registryKey());
     }
 
-    @Override
-    public int getWeight() {
-        return weight;
-    }
-    @Override
-    public boolean isCursed() {
-        return false;
-    }
 
     @Override
     public boolean isDiscoverable() {
         return true;
     }
+
     @Override
     public boolean isTradeable() {
         return false;
@@ -125,10 +124,6 @@ public class BlinkEnchant extends ArcaniaEnchant {
     @Override
     public boolean isTreasure() {
         return false;
-    }
-    @Override
-    public @NotNull String translationKey() {
-        return "enchantment." + NAMESPACE + "." + key;
     }
 
     @Override
