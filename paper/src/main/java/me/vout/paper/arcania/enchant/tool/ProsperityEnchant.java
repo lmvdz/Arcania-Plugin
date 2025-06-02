@@ -1,14 +1,8 @@
 package me.vout.paper.arcania.enchant.tool;
 
-import io.papermc.paper.enchantments.EnchantmentRarity;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
-import io.papermc.paper.registry.keys.ItemTypeKeys;
-import io.papermc.paper.registry.set.RegistryKeySet;
-import io.papermc.paper.registry.set.RegistrySet;
-import me.vout.paper.arcania.enchant.ArcaniaEnchant;
-import net.kyori.adventure.key.Key;
-import net.kyori.adventure.text.Component;
+import java.util.Random;
+import java.util.Set;
+
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.bukkit.entity.EntityCategory;
@@ -19,8 +13,15 @@ import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Random;
-import java.util.Set;
+import io.papermc.paper.enchantments.EnchantmentRarity;
+import io.papermc.paper.registry.RegistryKey;
+import io.papermc.paper.registry.keys.EnchantmentKeys;
+import io.papermc.paper.registry.keys.ItemTypeKeys;
+import io.papermc.paper.registry.set.RegistryKeySet;
+import io.papermc.paper.registry.set.RegistrySet;
+import me.vout.paper.arcania.enchant.ArcaniaEnchant;
+import net.kyori.adventure.key.Key;
+import net.kyori.adventure.text.Component;
 
 public class ProsperityEnchant extends ArcaniaEnchant {
     public static final ProsperityEnchant INSTANCE = new ProsperityEnchant();
@@ -32,10 +33,12 @@ public class ProsperityEnchant extends ArcaniaEnchant {
                 3,
                 1,
                 10,
+                1,
+                3,
                 10,
                 15,
                 1
-                );
+            );
     }
 
     public static boolean shouldApplyEffect(int level) {
@@ -118,6 +121,7 @@ public class ProsperityEnchant extends ArcaniaEnchant {
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
         return RegistrySet.keySet(RegistryKey.ITEM,
                 ItemTypeKeys.BOOK,
+                
                 ItemTypeKeys.SHEARS,
                 ItemTypeKeys.ENCHANTED_BOOK,
 
