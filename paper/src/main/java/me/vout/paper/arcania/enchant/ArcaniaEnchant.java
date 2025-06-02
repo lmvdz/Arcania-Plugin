@@ -2,8 +2,10 @@ package me.vout.paper.arcania.enchant;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemType;
 import org.jetbrains.annotations.NotNull;
 
+import io.papermc.paper.registry.tag.TagKey;
 import net.kyori.adventure.text.Component;
 
 public abstract class ArcaniaEnchant extends Enchantment {
@@ -33,6 +35,19 @@ public abstract class ArcaniaEnchant extends Enchantment {
         this.minModifiedCost = minModifiedCost;
         this.maxModifiedCost = maxModifiedCost;
         this.anvilCost = anvilCost;
+    }
+
+    public boolean allowToBeEnchantedOnBook() {
+        return true;
+    }
+    
+
+    public @NotNull TagKey<ItemType> getPrimaryItemsTagKey() {
+        return null;
+    }
+
+    public @NotNull TagKey<ItemType> getSupportedItemsTagKey() {
+        return null;
     }
 
     @Override

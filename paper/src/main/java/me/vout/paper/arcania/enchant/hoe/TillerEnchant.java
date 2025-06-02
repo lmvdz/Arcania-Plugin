@@ -18,12 +18,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
+import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
 import io.papermc.paper.registry.set.RegistryKeySet;
-import io.papermc.paper.registry.set.RegistrySet;
+import io.papermc.paper.registry.tag.TagKey;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
-import me.vout.paper.arcania.item.registry.RegistryTags;
 import me.vout.paper.arcania.util.ToolHelper;
 
 public class TillerEnchant extends ArcaniaEnchant {
@@ -36,8 +34,8 @@ public class TillerEnchant extends ArcaniaEnchant {
                 1,
                 1,
                 5,
-                1,
-                3,
+                5,
+                15,
                 10,
                 15,
                 1
@@ -103,22 +101,33 @@ public class TillerEnchant extends ArcaniaEnchant {
     
     @Override
     public @NotNull RegistryKeySet<Enchantment> getExclusiveWith() {
-        return RegistrySet.keySet(RegistryKey.ENCHANTMENT, EnchantmentKeys.create(getKey()));
+        return null;
     }
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
-        return RegistrySet.keySet(RegistryTags.HOES.registryKey());
+        return null;
     }
 
     @Override
-    public @NotNull EnchantmentRarity getRarity() {
-        return EnchantmentRarity.RARE;
+    public @NotNull TagKey<ItemType> getPrimaryItemsTagKey() {
+        return ItemTypeTagKeys.HOES;
     }
+
 
     @Override
     public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
-        return RegistrySet.keySet(RegistryTags.HOES.registryKey());
+        return null;
+    }
+
+    @Override
+    public @NotNull TagKey<ItemType> getSupportedItemsTagKey() {
+        return ItemTypeTagKeys.HOES;
+    }
+    
+    @Override
+    public @NotNull EnchantmentRarity getRarity() {
+        return EnchantmentRarity.RARE;
     }
 
     @Override

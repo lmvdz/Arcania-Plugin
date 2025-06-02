@@ -14,13 +14,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
-import io.papermc.paper.registry.keys.ItemTypeKeys;
 import io.papermc.paper.registry.set.RegistryKeySet;
-import io.papermc.paper.registry.set.RegistrySet;
+import io.papermc.paper.registry.tag.TagKey;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
-import net.kyori.adventure.key.Key;
+import me.vout.paper.arcania.item.registry.RegistryTags;
 import net.kyori.adventure.text.Component;
 
 public class ProsperityEnchant extends ArcaniaEnchant {
@@ -33,8 +30,8 @@ public class ProsperityEnchant extends ArcaniaEnchant {
                 3,
                 1,
                 10,
-                1,
-                3,
+                45,
+                100,
                 10,
                 15,
                 1
@@ -96,56 +93,30 @@ public class ProsperityEnchant extends ArcaniaEnchant {
     public float getDamageIncrease(int arg0, @NotNull EntityType arg1) {
         return 0;
     }
-
     @Override
     public @NotNull RegistryKeySet<Enchantment> getExclusiveWith() {
-        return RegistrySet.keySet(EnchantmentKeys.create(Key.key(NAMESPACE, key)).registryKey());
-    }
-
-    @Override
-    public int getMaxLevel() {
-        return maxLevel;
-    }
-
-    @Override
-    public int getMaxModifiedCost(int arg0) {
-        return maxModifiedCost;
-    }
-
-    @Override
-    public int getMinModifiedCost(int arg0) {
-        return minModifiedCost;
+        return null;
     }
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
-        return RegistrySet.keySet(RegistryKey.ITEM,
-                ItemTypeKeys.BOOK,
-                
-                ItemTypeKeys.SHEARS,
-                ItemTypeKeys.ENCHANTED_BOOK,
+        return null;
+    }
 
-                ItemTypeKeys.WOODEN_PICKAXE,
-                ItemTypeKeys.STONE_PICKAXE,
-                ItemTypeKeys.IRON_PICKAXE,
-                ItemTypeKeys.GOLDEN_PICKAXE,
-                ItemTypeKeys.DIAMOND_PICKAXE,
-                ItemTypeKeys.NETHERITE_PICKAXE,
+    @Override
+    public @NotNull TagKey<ItemType> getPrimaryItemsTagKey() {
+        return RegistryTags.PROSPERITY_TOOLS_AND_BOOKS;
+    }
 
-                ItemTypeKeys.WOODEN_AXE,
-                ItemTypeKeys.STONE_AXE,
-                ItemTypeKeys.IRON_AXE,
-                ItemTypeKeys.GOLDEN_AXE,
-                ItemTypeKeys.DIAMOND_AXE,
-                ItemTypeKeys.NETHERITE_AXE,
 
-                ItemTypeKeys.WOODEN_SHOVEL,
-                ItemTypeKeys.STONE_SHOVEL,
-                ItemTypeKeys.IRON_SHOVEL,
-                ItemTypeKeys.GOLDEN_SHOVEL,
-                ItemTypeKeys.DIAMOND_SHOVEL,
-                ItemTypeKeys.NETHERITE_SHOVEL
-        );
+    @Override
+    public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
+        return null;
+    }
+
+    @Override
+    public @NotNull TagKey<ItemType> getSupportedItemsTagKey() {
+        return RegistryTags.PROSPERITY_TOOLS_AND_BOOKS;
     }
 
     @Override
@@ -153,45 +124,6 @@ public class ProsperityEnchant extends ArcaniaEnchant {
         return EnchantmentRarity.RARE;
     }
 
-    @Override
-    public int getStartLevel() {
-        return startLevel;
-    }
-
-    @Override
-    public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
-        return RegistrySet.keySet(RegistryKey.ITEM,
-                ItemTypeKeys.BOOK,
-                ItemTypeKeys.SHEARS,
-                ItemTypeKeys.ENCHANTED_BOOK,
-
-                ItemTypeKeys.WOODEN_PICKAXE,
-                ItemTypeKeys.STONE_PICKAXE,
-                ItemTypeKeys.IRON_PICKAXE,
-                ItemTypeKeys.GOLDEN_PICKAXE,
-                ItemTypeKeys.DIAMOND_PICKAXE,
-                ItemTypeKeys.NETHERITE_PICKAXE,
-
-                ItemTypeKeys.WOODEN_AXE,
-                ItemTypeKeys.STONE_AXE,
-                ItemTypeKeys.IRON_AXE,
-                ItemTypeKeys.GOLDEN_AXE,
-                ItemTypeKeys.DIAMOND_AXE,
-                ItemTypeKeys.NETHERITE_AXE,
-
-                ItemTypeKeys.WOODEN_SHOVEL,
-                ItemTypeKeys.STONE_SHOVEL,
-                ItemTypeKeys.IRON_SHOVEL,
-                ItemTypeKeys.GOLDEN_SHOVEL,
-                ItemTypeKeys.DIAMOND_SHOVEL,
-                ItemTypeKeys.NETHERITE_SHOVEL
-        );
-    }
-
-    @Override
-    public int getWeight() {
-        return weight;
-    }
     @Override
     public boolean isCursed() {
         return false;

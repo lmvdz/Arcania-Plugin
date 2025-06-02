@@ -35,21 +35,33 @@ public class ArcaniaBootstrap implements PluginBootstrap {
     public void bootstrap(BootstrapContext context) {
 
         LifecycleEventManager<BootstrapContext> lifecycle = context.getLifecycleManager();
+
+
         // Register command handler
         lifecycle.registerEventHandler(LifecycleEvents.COMMANDS, commands -> {
+            // register arcania command
             commands.registrar().register("arcania", arcaniaCommand);
         });
 
         lifecycle.registerEventHandler(LifecycleEvents.TAGS.preFlatten(RegistryKey.ITEM), event -> {
+            // register all arcania item tags
             final PreFlattenTagRegistrar<ItemType> registrar = event.registrar();
             registrar.setTag(RegistryTags.TOOLS, RegistryTags.TOOLS_SET);
+            registrar.setTag(RegistryTags.BOOKS, RegistryTags.BOOKS_SET);
+            registrar.setTag(RegistryTags.PICKAXES_AND_BOOKS, RegistryTags.PICKAXES_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.AXES_AND_BOOKS, RegistryTags.AXES_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.SHOVELS_AND_BOOKS, RegistryTags.SHOVELS_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.HOES_AND_BOOKS, RegistryTags.HOES_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.SWORDS_AND_BOOKS, RegistryTags.SWORDS_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.TOOLS_AND_BOOKS, RegistryTags.TOOLS_AND_BOOKS_SET);
             registrar.setTag(RegistryTags.SWORDS_AND_TOOLS, RegistryTags.SWORDS_AND_TOOLS_SET);
-            registrar.setTag(RegistryTags.HOES, RegistryTags.HOES_SET);
-            registrar.setTag(RegistryTags.AXES, RegistryTags.AXES_SET);
-            registrar.setTag(RegistryTags.SHOVELS, RegistryTags.SHOVELS_SET);
-            registrar.setTag(RegistryTags.PICKAXES, RegistryTags.PICKAXES_SET);
-            registrar.setTag(RegistryTags.RANGED, RegistryTags.RANGED_SET);
+            registrar.setTag(RegistryTags.SWORDS_TOOLS_AND_BOOKS, RegistryTags.SWORDS_TOOLS_AND_BOOKS_SET);
             registrar.setTag(RegistryTags.SWORDS_AND_RANGED, RegistryTags.SWORDS_AND_RANGED_SET);
+            registrar.setTag(RegistryTags.SWORDS_RANGED_AND_BOOKS, RegistryTags.SWORDS_RANGED_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.RANGED, RegistryTags.RANGED_SET);
+            registrar.setTag(RegistryTags.RANGED_AND_BOOKS, RegistryTags.RANGED_AND_BOOKS_SET);
+            registrar.setTag(RegistryTags.PROSPERITY_TOOLS, RegistryTags.PROSPERITY_TOOLS_SET);
+            registrar.setTag(RegistryTags.PROSPERITY_TOOLS_AND_BOOKS, RegistryTags.PROSPERITY_TOOLS_AND_BOOKS_SET);
         });
         
 
@@ -60,22 +72,27 @@ public class ArcaniaBootstrap implements PluginBootstrap {
             // Register all arcania enchantments
             // ArcaniaEnchant implements Enchantment so we can just pass all the attributes directly to the builder using the RegisterArcaniaEncha
             for (ArcaniaEnchant enchant: enchantManager.getEnchants()) {
-                RegisterArcaniaEnchant.register(event.registry(), enchant);
+                RegisterArcaniaEnchant.register(event, enchant);
             }
         }));
 
         // add enchants to enchantment table tag
         lifecycle.registerEventHandler(LifecycleEvents.TAGS.postFlatten(RegistryKey.ENCHANTMENT).newHandler(event -> {
+            // create a set of all arcania enchantments that are discoverable
             Set<TypedKey<Enchantment>> arcaniaEnchants = enchantManager.getEnchants().stream().filter(enchant -> enchant.isDiscoverable()).map(enchant -> EnchantmentKeys.create(Key.key(enchant.getKey().getNamespace(), enchant.getKey().getKey()))).collect(Collectors.toSet());
+            
             context.getLogger().info("Adding " + arcaniaEnchants.size() + " arcania enchantments to enchantment table tag");
+            // add all arcania enchantments to the enchantment table tag
             event.registrar().addToTag(EnchantmentTagKeys.IN_ENCHANTING_TABLE, arcaniaEnchants);
+            // log all tags
             event.registrar().getAllTags().forEach((tagKey, tagValue) -> {
-                context.getLogger().info("Tag: " + tagKey.registryKey().toString() + " " + tagValue.stream().map(entry -> entry.key().asString()).collect(Collectors.joining(", ")));
+                context.getLogger().info("Tag: " + tagKey.key().toString() + " " + tagValue.stream().map(entry -> entry.key().asString()).collect(Collectors.joining(", ")));
             });
         }));
 
         // add enchants to enchantment table tag
         lifecycle.registerEventHandler(LifecycleEvents.TAGS.postFlatten(RegistryKey.ITEM).newHandler(event -> {
+            // log all tags
             event.registrar().getAllTags().forEach((tagKey, tagValue) -> {
                 context.getLogger().info("Tag: " + tagKey.key().asString() + " " + tagValue.stream().map(entry -> entry.key().asString()).collect(Collectors.joining(", ")));
             });

@@ -20,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
 import io.papermc.paper.registry.set.RegistryKeySet;
-import io.papermc.paper.registry.set.RegistrySet;
+import io.papermc.paper.registry.tag.TagKey;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
 import me.vout.paper.arcania.item.registry.RegistryTags;
 import net.kyori.adventure.text.Component;
@@ -35,8 +35,8 @@ public class GravityEnchant extends ArcaniaEnchant {
                 1,
                 1,
                 10,
-                1,
-                3,
+                15,
+                45,
                 10,
                 15,
                 1
@@ -97,18 +97,30 @@ public class GravityEnchant extends ArcaniaEnchant {
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
-        return RegistrySet.keySet(RegistryTags.RANGED.registryKey());
+        return null;
     }
 
+    @Override
+    public @NotNull TagKey<ItemType> getPrimaryItemsTagKey() {
+        return RegistryTags.RANGED;
+    }
+
+
+    @Override
+    public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
+        return null;
+    }
+
+    @Override
+    public @NotNull TagKey<ItemType> getSupportedItemsTagKey() {
+        return RegistryTags.RANGED;
+    }
+    
     @Override
     public @NotNull EnchantmentRarity getRarity() {
         return EnchantmentRarity.RARE;
     }
 
-    @Override
-    public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
-        return RegistrySet.keySet(RegistryTags.RANGED.registryKey());
-    }
 
 
     @Override

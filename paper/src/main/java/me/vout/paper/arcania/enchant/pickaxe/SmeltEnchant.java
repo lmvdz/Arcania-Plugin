@@ -13,12 +13,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import io.papermc.paper.enchantments.EnchantmentRarity;
-import io.papermc.paper.registry.RegistryKey;
-import io.papermc.paper.registry.keys.EnchantmentKeys;
+import io.papermc.paper.registry.keys.tags.ItemTypeTagKeys;
 import io.papermc.paper.registry.set.RegistryKeySet;
-import io.papermc.paper.registry.set.RegistrySet;
+import io.papermc.paper.registry.tag.TagKey;
 import me.vout.paper.arcania.enchant.ArcaniaEnchant;
-import me.vout.paper.arcania.item.registry.RegistryTags;
 
 public class SmeltEnchant extends ArcaniaEnchant {
     public static final SmeltEnchant INSTANCE = new SmeltEnchant();
@@ -29,8 +27,8 @@ public class SmeltEnchant extends ArcaniaEnchant {
             1,
             1,
             5,
-            1,
-            3,
+            30,
+            75,
             10,
             15,
             1
@@ -70,24 +68,33 @@ public class SmeltEnchant extends ArcaniaEnchant {
      */
     @Override
     public @NotNull RegistryKeySet<Enchantment> getExclusiveWith() {
-        return RegistrySet.keySet(RegistryKey.ENCHANTMENT, EnchantmentKeys.SILK_TOUCH);
+        return null;
     }
-
 
     @Override
     public @Nullable RegistryKeySet<ItemType> getPrimaryItems() {
-        return RegistrySet.keySet(RegistryTags.PICKAXES.registryKey());
+        return null;
     }
 
     @Override
-    public @NotNull EnchantmentRarity getRarity() {
-        return EnchantmentRarity.RARE;
+    public @NotNull TagKey<ItemType> getPrimaryItemsTagKey() {
+        return ItemTypeTagKeys.PICKAXES;
     }
 
 
     @Override
     public @NotNull RegistryKeySet<ItemType> getSupportedItems() {
-        return RegistrySet.keySet(RegistryTags.PICKAXES.registryKey());
+        return null;
+    }
+
+    @Override
+    public @NotNull TagKey<ItemType> getSupportedItemsTagKey() {
+        return ItemTypeTagKeys.PICKAXES;
+    }
+
+    @Override
+    public @NotNull EnchantmentRarity getRarity() {
+        return EnchantmentRarity.RARE;
     }
 
 
