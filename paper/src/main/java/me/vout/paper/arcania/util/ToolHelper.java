@@ -159,6 +159,7 @@ public class ToolHelper {
                 }
             }
             if (prosperityLevel > 0 && ProsperityEnchant.shouldApplyEffect(prosperityLevel)) {
+                player.getWorld().playSound(player.getLocation(), Sound.BLOCK_AMETHYST_BLOCK_CHIME, 0.7f, 1.0f);
                 itemToAdd.setAmount(itemToAdd.getAmount() * 2);
             }
             blockDrops.add(itemToAdd);
